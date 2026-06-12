@@ -7,7 +7,23 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null); // Track open dropdown on mobile/hover
+  const [timeoutId, setTimeoutId] = useState(null);
   const pathname = usePathname();
+
+  const handleMouseEnter = (index) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setActiveDropdown(index);
+  };
+
+  const handleMouseLeave = () => {
+    const id = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
+    setTimeoutId(id);
+  };
 
   const navigation = [
     {
@@ -111,7 +127,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Bannari Amman Institute of Technology"
-              className="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-102"
+              className="h-13 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-102"
             />
           </Link>
 
@@ -121,8 +137,8 @@ export default function Navbar() {
               <div
                 key={index}
                 className="relative group py-6"
-                onMouseEnter={() => setActiveDropdown(index)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
               >
                 {item.submenu ? (
                   <button
@@ -133,7 +149,7 @@ export default function Navbar() {
                     }`}
                   >
                     {item.name}
-                    <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className={`w-4 h-4 transition-transform ${activeDropdown === index ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
@@ -152,7 +168,11 @@ export default function Navbar() {
 
                 {/* Submenu Dropdown */}
                 {item.submenu && activeDropdown === index && (
-                  <div className="absolute top-[75px] left-1/2 -translate-x-1/2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-3 animate-fade-in flex flex-col font-semibold">
+                  <div 
+                    className="absolute top-[68px] left-1/2 -translate-x-1/2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-3 flex flex-col font-semibold animate-fade-in z-50"
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
+                  >
                     <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3">
                       <div className="w-full h-full bg-white border-t border-l border-slate-200 rotate-45"></div>
                     </div>

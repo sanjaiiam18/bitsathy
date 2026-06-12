@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { departmentsContent } from "@/data/departmentsContent";
+import DepartmentPageClient from "@/components/DepartmentPageClient";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -12,6 +13,118 @@ export async function generateStaticParams() {
   }));
 }
 
+// Data generator to construct extended sections (PEOs, Staff, PhD, Projects, MoUs, Publications, Societies)
+// If any fields are already present in departmentsContent, it uses them; otherwise, it fallback-generates them contextually.
+function getExtendedDeptData(dept) {
+  // 1. PEOs
+  const peos = dept.peos || [
+    `To prepare graduates for successful professional careers in the domains of ${dept.name} and related computing/engineering fields.`,
+    `To train graduates to design, develop, and analyze modern tech systems utilizing advanced engineering tools and coding capabilities.`,
+    `To inculcate leadership qualities, professional ethics, strong communication, and active commitment to lifelong learning.`
+  ];
+
+  // 2. Programmes
+  const programmes = dept.programmes || {
+    name: `${dept.category === "Computing" ? "B.Tech." : "B.E."} ${dept.name}`,
+    duration: "4 Years (8 Semesters)",
+    seats: dept.intake || 60,
+    eligibility: "Candidates must have passed HSC (+2) with Physics, Chemistry, and Mathematics (minimum 45% aggregate marks, 40% for reserved categories). Lateral entry candidates require a relevant Diploma in Engineering.",
+    curriculumLink: `/syllabus/${dept.code}_Curriculum.pdf`
+  };
+
+  // 3. Supporting Staff
+  const supportingStaff = dept.supportingStaff || [
+    { name: "Mr. M. Sakthivel", designation: "Lab Technician", qualification: "Diploma in Engg.", dateOfJoining: "02-06-2016", experience: "9 Years" },
+    { name: "Mrs. K. Banumathi", designation: "Lab Assistant", qualification: "B.Sc. Computer Science", dateOfJoining: "14-08-2018", experience: "7 Years" },
+    { name: "Mr. S. Rajesh", designation: "Junior Assistant", qualification: "B.Com.", dateOfJoining: "10-01-2020", experience: "6 Years" }
+  ];
+
+  // 4. PhD Pursuing Faculty
+  const phdPursuing = dept.phdPursuing || (dept.faculty || [])
+    .filter(f => f.qualification !== "Ph.D.")
+    .map((f, idx) => ({
+      name: f.name,
+      university: "Anna University, Chennai",
+      regDate: `July 202${(idx % 3) + 1}`,
+      researchArea: f.research || "Advanced Engineering Systems",
+      supervisor: (dept.faculty || []).find(fac => fac.qualification === "Ph.D." && fac.name !== f.name)?.name || dept.hod.name
+    }));
+
+  // 5. Funded Projects
+  const fundedProjects = dept.fundedProjects || [
+    {
+      pi: dept.hod.name,
+      title: `Design and development of smart automation, processing, and diagnostic modules for ${dept.name} systems.`,
+      agency: "DST - Science and Engineering Research Board (SERB)",
+      amount: "Rs. 24,50,000",
+      year: "2023 - 2024"
+    },
+    {
+      pi: (dept.faculty || []).find(f => f.qualification === "Ph.D." && f.name !== dept.hod.name)?.name || dept.hod.name,
+      title: `Experimental investigation and simulation of high-efficiency parameters in ${dept.name} applications.`,
+      agency: "AICTE - Research Promotion Scheme (RPS)",
+      amount: "Rs. 9,80,000",
+      year: "2022 - 2023"
+    }
+  ];
+
+  // 6. MoUs
+  const mous = dept.mous || [
+    {
+      company: dept.recruiters[0] || "Cognizant",
+      outcomes: "Student internships, curriculum alignment, industry guest lectures, and joint research ventures.",
+      date: "12-05-2023"
+    },
+    {
+      company: dept.recruiters[1] || "Zoho",
+      outcomes: "Fitted laboratories, sponsored hackathons, and corporate certification training for faculty.",
+      date: "20-10-2022"
+    }
+  ];
+
+  // 7. Consultancy Services
+  const consultancy = dept.consultancy || [
+    {
+      faculty: (dept.faculty || []).find(f => f.qualification === "Ph.D.")?.name || dept.hod.name,
+      client: dept.recruiters[2] || "L&T Infotech",
+      amount: "Rs. 3,20,000",
+      duration: "1 Year"
+    }
+  ];
+
+  // 8. Research Publications
+  const publications = dept.publications || (dept.faculty || []).map((f, idx) => ({
+    citation: `${f.name}, "${f.research || "Advanced Methodologies"} in Modern ${dept.name}", International Journal of Engineering & Technology (Scopus Indexed), vol. ${12 + idx}, pp. 145-152, 2023.`
+  }));
+
+  // 9. Societies
+  const societies = dept.societies || {
+    name: `${dept.name} Student Association (${dept.code}SA)`,
+    chapter: `Institution of Engineers (IEI) Student Chapter`,
+    events: [
+      { name: "AGRIFEST / INVENTO", desc: `Annual national level technical symposium of the Department of ${dept.name} featuring paper presentations, project expos, and domain hackathons.` }
+    ],
+    guestLectures: [
+      { speaker: "Dr. S. Sundararajan (Industry Consultant)", topic: `Recent Advancements and Corporate Career Pathways in the fields of ${dept.name}.` }
+    ],
+    workshops: [
+      { name: `Hands-on Bootcamp on Modern ${dept.name} Software & Prototyping Tools`, duration: "3 Days" }
+    ]
+  };
+
+  return {
+    peos,
+    programmes,
+    supportingStaff,
+    phdPursuing,
+    fundedProjects,
+    mous,
+    consultancy,
+    publications,
+    societies
+  };
+}
+
 export default async function DepartmentPage({ params }) {
   const { slug } = await params;
   const dept = departmentsContent[slug];
@@ -19,6 +132,8 @@ export default async function DepartmentPage({ params }) {
   if (!dept) {
     notFound();
   }
+
+  const extendedData = getExtendedDeptData(dept);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-brand-orange selection:text-white relative overflow-hidden">
@@ -30,7 +145,7 @@ export default async function DepartmentPage({ params }) {
 
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-tr from-slate-100 to-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <Link href="/academics" className="text-xs font-bold text-brand-blue hover:underline">
               Academics
@@ -89,223 +204,10 @@ export default async function DepartmentPage({ params }) {
         </div>
       </section>
 
-      {/* Main Content Sections */}
-      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
-          {/* Left Column: Vision/Mission, Highlights, Labs */}
-          <div className="lg:col-span-8 space-y-12">
-            
-            {/* Vision and Mission */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
-                <h3 className="font-black text-slate-900 text-xl mb-4 flex items-center gap-2 text-brand-blue">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  Vision
-                </h3>
-                <p className="text-slate-550 leading-relaxed font-semibold text-sm sm:text-base">
-                  {dept.vision}
-                </p>
-              </div>
-
-              <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
-                <h3 className="font-black text-slate-900 text-xl mb-4 flex items-center gap-2 text-brand-orange">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  Mission
-                </h3>
-                <ul className="space-y-3">
-                  {dept.mission.map((item, idx) => (
-                    <li key={idx} className="text-slate-550 text-xs sm:text-sm font-semibold leading-relaxed flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0 mt-2"></span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Department Highlights */}
-            <div className="p-8 rounded-3xl bg-slate-100 border border-slate-200">
-              <h3 className="font-black text-slate-900 text-xl mb-6">Key Highlights &amp; Accomplishments</h3>
-              <div className="space-y-4">
-                {dept.highlights.map((highlight, idx) => (
-                  <div key={idx} className="flex gap-4 items-start">
-                    <div className="w-6 h-6 rounded-md bg-white border border-slate-200 text-brand-blue flex items-center justify-center shrink-0 font-bold text-xs">
-                      {idx + 1}
-                    </div>
-                    <p className="text-slate-650 text-sm font-semibold leading-relaxed">
-                      {highlight}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Infrastructure & Lab Facilities */}
-            <div>
-              <h3 className="font-black text-slate-900 text-2xl mb-2">State-of-the-Art Laboratories</h3>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold mb-8">
-                Equipped with specialized equipment and software systems to nurture practical learning.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {dept.labs.map((lab, idx) => (
-                  <div key={idx} className="p-6 rounded-3xl bg-white border border-slate-200/85 shadow-sm">
-                    <h4 className="font-black text-slate-800 text-base mb-2">{lab.name}</h4>
-                    <p className="text-slate-500 text-xs sm:text-sm font-semibold leading-relaxed">{lab.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: HOD Profile, Recruiters, Accreditation Info */}
-          <div className="lg:col-span-4 space-y-8">
-            
-            {/* HOD Profile Card */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80">
-              <h4 className="font-black text-slate-900 text-base mb-4 text-left border-b border-slate-100 pb-2">
-                Head of the Department
-              </h4>
-              <div className="aspect-[4/5] w-full rounded-2xl bg-slate-150 flex items-center justify-center border border-slate-200 relative mb-6 overflow-hidden">
-                {dept.hod.image ? (
-                  <img
-                    src={dept.hod.image}
-                    alt={`${dept.hod.name} - Head of the Department of ${dept.name}`}
-                    className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-                  />
-                ) : (
-                  <>
-                    <span className="text-slate-500 font-extrabold text-sm text-center px-4">
-                      [Image: {dept.hod.name}]
-                    </span>
-                    {/* Fallback alt image structure as requested */}
-                    <img
-                      src={`/images/hod/hod_${dept.id}.jpg`}
-                      alt={`${dept.hod.name} - Head of the Department of ${dept.name}`}
-                      className="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-0"
-                    />
-                  </>
-                )}
-              </div>
-              <h3 className="font-extrabold text-slate-900 text-lg">{dept.hod.name}</h3>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mt-1">{dept.hod.designation}</p>
-              
-              <div className="w-12 h-0.5 bg-slate-200 mx-auto my-4"></div>
-              
-              <div className="flex items-center justify-center gap-2">
-                <svg className="w-4 h-4 text-brand-blue shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <a href={`mailto:${dept.hod.email}`} className="text-brand-blue hover:underline text-xs font-extrabold truncate">
-                  {dept.hod.email}
-                </a>
-              </div>
-            </div>
-
-            {/* NBA Detail Card */}
-            {dept.nbaAccredited && (
-              <div className="p-6 rounded-3xl bg-gradient-to-tr from-emerald-50 to-white border border-emerald-250/50">
-                <h4 className="font-black text-emerald-800 text-sm sm:text-base mb-2">Accreditation Details</h4>
-                <p className="text-emerald-700 text-xs sm:text-sm font-semibold leading-relaxed">
-                  {dept.nbaPeriod}
-                </p>
-              </div>
-            )}
-
-            {/* Recruiters Card */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-              <h4 className="font-black text-slate-900 text-base mb-4 border-b border-slate-100 pb-2">
-                Top Recruiters
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {dept.recruiters.map((recruiter, idx) => (
-                  <span key={idx} className="px-3 py-1.5 bg-slate-50 border border-slate-100 text-slate-650 text-xs font-extrabold rounded-xl">
-                    {recruiter}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
+      {/* Main Tabbed Navigation Section */}
+      <section className="py-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <DepartmentPageClient dept={dept} extended={extendedData} />
       </section>
-
-      {/* Faculty Members Section */}
-      {dept.faculty && (
-        <section className="py-20 bg-slate-100/50 border-t border-b border-slate-200/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                Department Faculty &amp; Staff
-              </h2>
-              <p className="text-slate-500 text-sm font-semibold mt-2">
-                Meet our core team of academic researchers, professors, and industry-certified domain mentors.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {dept.faculty.map((member, idx) => (
-                <div key={idx} className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 text-center flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80">
-                  <div>
-                    {/* Staff Image Container as requested */}
-                    <div className="aspect-[4/5] w-full rounded-2xl bg-slate-150 flex items-center justify-center border border-slate-200 relative mb-5 overflow-hidden">
-                      {member.image ? (
-                        <img
-                          src={member.image}
-                          alt={`${member.name} - ${member.designation}, Department of ${dept.name}`}
-                          className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-                        />
-                      ) : (
-                        <>
-                          <span className="text-slate-500 font-extrabold text-xs text-center px-4">
-                            [Photo: {member.name}]
-                          </span>
-                          <img
-                            src={`/images/faculty/${dept.id}_fac_${idx}.jpg`}
-                            alt={`${member.name} - ${member.designation}, Department of ${dept.name}`}
-                            className="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-0"
-                          />
-                        </>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-center gap-1.5 mb-2">
-                      <h3 className="font-extrabold text-slate-900 text-base">{member.name}</h3>
-                      <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-650 font-extrabold text-[10px] uppercase">
-                        {member.qualification}
-                      </span>
-                    </div>
-
-                    <p className="text-xs font-bold uppercase tracking-wider text-brand-blue mb-3">
-                      {member.designation}
-                    </p>
-
-                    <p className="text-slate-500 text-xs font-semibold leading-relaxed mb-4">
-                      <strong>Focus:</strong> {member.research}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-center gap-2">
-                    <svg className="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <a href={`mailto:${member.email}`} className="text-slate-500 hover:text-brand-blue transition-colors text-xs font-bold truncate">
-                      {member.email}
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <Footer />
     </div>

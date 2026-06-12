@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 17.5px;
 }
 
 body {
@@ -180,6 +181,25 @@ body {
 }
 .slide-down {
   animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Global Full Screen Width Override */
+.max-w-7xl, .max-w-8xl, .max-w-5xl {
+  max-width: 100% !important;
+}
+
+@media (min-width: 1024px) {
+  .max-w-7xl, .max-w-8xl, .max-w-5xl {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+
+@media (min-width: 1536px) {
+  .max-w-7xl, .max-w-8xl, .max-w-5xl {
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
+  }
 }
 
 

@@ -83,7 +83,7 @@ export const departmentsContent = {
     ],
     faculty: [
       { name: "Dr. Sasikala D", designation: "Professor & Head", qualification: "Ph.D.", research: "Machine Learning & AI", email: "hodcse@bitsathy.ac.in", image: "https://www.bitsathy.ac.in/wp-content/uploads/2022/10/Dr-Sasikala-D.png" },
-      { name: "Dr. K. Premalatha  ", designation: "Professor", qualification: "Ph.D.", research: "Distributed Systems & Cloud", email: "sasikalad@bitsathy.ac.in",image:"https://www.bitsathy.ac.in/wp-content/uploads/Dr-Premalatha-K-1.jpg"},
+      { name: "Dr. K. Premalatha  ", designation: "Professor", qualification: "Ph.D.", research: "Distributed Systems & Cloud", email: "premalathak@bitsathy.ac.in",image:"https://www.bitsathy.ac.in/wp-content/uploads/Dr-Premalatha-K-1.jpg"},
       { name: "Dr. Ramya R", designation: "Associate Professor", qualification: "Ph.D.", research: "Image & Signal Processing", email: "ramyar@bitsathy.ac.in" ,image:"https://www.bitsathy.ac.in/wp-content/uploads/Mrs-Kavitha-R.jpg"},
       { name: "Dr Sathishkumar P", designation: "Professor", qualification: "Ph.D.", research: "Cryptography & NetSec", email: "sathishkumarp@bitsathy.ac.in" ,image:"https://www.bitsathy.ac.in/wp-content/uploads/Dr-Sathishkumar-P.jpg"},
       { name: "Prof. Sangavi N", designation: "Assistant Professor", qualification: "M.E.", research: "Database Management & SQL", email: "kavithar@bitsathy.ac.in",image:"https://www.bitsathy.ac.in/wp-content/uploads/SANGAVI-N.jpg" },

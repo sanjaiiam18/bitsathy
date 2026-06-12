@@ -100,7 +100,7 @@ export default function Home() {
             className="w-full h-full object-cover"
           >
             <source
-              src="/home.mp4"
+              src="https://www.bitsathy.ac.in/wp-content/uploads/Home.mp4"
               type="video/mp4"
             />
           </video>
