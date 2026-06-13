@@ -411,7 +411,7 @@ export default function Placements() {
         <div className="max-w-8xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-20">
           
           {/* Hero Left Content */}
-          <div className="lg:col-span-6 space-y-6 text-left text-slate-900">
+          <div className="lg:col-span-6 space-y-6 text-left text-slate-900 reveal">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -443,7 +443,7 @@ export default function Placements() {
           </div>
 
           {/* Hero Right: Interactive Image Slider */}
-          <div className="lg:col-span-6 flex justify-center w-full">
+          <div className="lg:col-span-6 flex justify-center w-full reveal-right">
             <div className="w-full max-w-2xl aspect-[16/10] bg-white rounded-3xl border border-slate-200 shadow-md relative overflow-hidden transition-all duration-300 hover:shadow-lg group/slider">
               
               {/* Slides Container */}
@@ -507,7 +507,7 @@ export default function Placements() {
       </section>
 
       {/* Floating Numerical Dashboard Stats */}
-      <section className="py-8 max-w-8xl mx-auto px-6 lg:px-12 w-full">
+      <section className="py-8 max-w-8xl mx-auto px-6 lg:px-12 w-full reveal-scale">
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 grid grid-cols-2 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-100">
           <div className="text-center flex flex-col justify-center py-2">
             <span className="text-3xl sm:text-5xl font-black text-brand-blue">44.0 LPA</span>
@@ -533,7 +533,7 @@ export default function Placements() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* Left: Interactive sector donut */}
-          <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-sm p-8 flex flex-col items-center justify-center">
+          <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-sm p-8 flex flex-col items-center justify-center reveal-left">
             <h3 className="font-extrabold text-slate-900 text-lg mb-6 text-center">Career Sectors Distribution</h3>
             
             {/* SVG Donut */}
@@ -598,7 +598,7 @@ export default function Placements() {
           </div>
 
           {/* Right: Why parents trust BIT 3x2 Grid */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-8 reveal-right">
             <div>
               <span className="text-xs font-bold tracking-widest text-brand-orange uppercase block mb-1">
                 Value Proposition
@@ -636,7 +636,7 @@ export default function Placements() {
         <div className="max-w-8xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left: Package threshold distribution */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 reveal-left">
             <div>
               <span className="text-xs font-bold tracking-widest text-brand-purple uppercase block mb-1">
                 Placement Insights
@@ -663,7 +663,7 @@ export default function Placements() {
           </div>
 
           {/* Right: Training syllabus */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-8 reveal-right">
             <div>
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase block mb-1">
                 Structured Preparation
@@ -899,7 +899,7 @@ export default function Placements() {
             {team.map((member, idx) => (
               <div 
                 key={idx} 
-                className="group bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-md hover:border-brand-purple/30"
+                className={`group bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-md hover:border-brand-purple/30 reveal-scale ${idx % 5 === 0 ? "delay-75" : idx % 5 === 1 ? "delay-150" : idx % 5 === 2 ? "delay-200" : idx % 5 === 3 ? "delay-300" : "delay-400"}`}
               >
                 {/* Profile Portrait */}
                 <div className="relative h-72 w-full bg-slate-100 overflow-hidden">

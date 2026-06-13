@@ -168,7 +168,7 @@ export default async function DepartmentPage({ params }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 text-left">
+            <div className="lg:col-span-8 text-left reveal-left">
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
                 <span className="text-xs font-extrabold tracking-widest text-brand-blue uppercase">
@@ -200,7 +200,7 @@ export default async function DepartmentPage({ params }) {
             </div>
 
             {/* Quick Stats Grid */}
-            <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm grid grid-cols-3 gap-4 text-center">
+            <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm grid grid-cols-3 gap-4 text-center reveal-right">
               <div>
                 <p className="text-slate-400 text-[10px] font-extrabold uppercase tracking-widest mb-1">Intake</p>
                 <p className="font-black text-slate-900 text-lg sm:text-xl">{dept.intake}</p>
@@ -220,7 +220,7 @@ export default async function DepartmentPage({ params }) {
       </section>
 
       {/* Main Tabbed Navigation Section */}
-      <section className="py-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
         <DepartmentPageClient dept={dept} extended={extendedData} />
       </section>
 

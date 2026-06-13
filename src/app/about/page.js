@@ -44,7 +44,7 @@ export default function About() {
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-slate-900 flex flex-col justify-between h-full pt-32 pb-16 items-center text-center">
-          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl reveal">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -82,7 +82,7 @@ export default function About() {
       {/* Main Story & Core Trust */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 reveal-left">
             <h2 className="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">
               Driven by the <span className="text-brand-orange">Bannari Amman Group</span>
             </h2>
@@ -115,7 +115,7 @@ export default function About() {
           </div>
 
           {/* Quick Metrics Column */}
-          <div className="lg:col-span-5 bg-gradient-to-tr from-brand-blue/5 to-slate-100 p-8 sm:p-10 rounded-3xl border border-slate-200">
+          <div className="lg:col-span-5 bg-gradient-to-tr from-brand-blue/5 to-slate-100 p-8 sm:p-10 rounded-3xl border border-slate-200 reveal-right">
             <h3 className="font-extrabold text-slate-900 text-xl mb-6">BIT Quality Indicators</h3>
             <div className="space-y-6">
               <div className="flex gap-4 items-start">
@@ -150,7 +150,7 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
             
             {/* Vision */}
-            <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex gap-6">
+            <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex gap-6 reveal-left">
               <div className="w-12 h-12 rounded-2xl bg-brand-blue/5 text-brand-blue flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -167,7 +167,7 @@ export default function About() {
             </div>
 
             {/* Mission */}
-            <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex gap-6">
+            <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex gap-6 reveal-right">
               <div className="w-12 h-12 rounded-2xl bg-brand-orange/5 text-brand-orange flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -192,7 +192,7 @@ export default function About() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((val, idx) => (
-              <div key={idx} className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center flex flex-col items-center">
+              <div key={idx} className={`p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center flex flex-col items-center reveal-scale ${idx % 4 === 0 ? "delay-75" : idx % 4 === 1 ? "delay-150" : idx % 4 === 2 ? "delay-200" : "delay-300"}`}>
                 <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-4 text-brand-purple">
                   {val.icon === "academic" && (
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -234,7 +234,7 @@ export default function About() {
 
         <div className="relative border-l-2 border-slate-200 max-w-4xl mx-auto pl-6 sm:pl-8 space-y-12">
           {milestones.map((mil, idx) => (
-            <div key={idx} className="relative group">
+            <div key={idx} className={`relative group ${idx % 2 === 0 ? "reveal-left" : "reveal-right"}`}>
               {/* Year dot tag */}
               <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 w-6 h-6 rounded-full border-4 border-slate-50 bg-brand-blue flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform"></div>
               

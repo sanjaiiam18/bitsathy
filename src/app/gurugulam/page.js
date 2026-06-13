@@ -32,7 +32,7 @@ export default function GurugulamPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-slate-900 flex flex-col justify-between h-full pt-32 pb-16 items-center text-center">
-          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl reveal">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -71,7 +71,7 @@ export default function GurugulamPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left Side: Blocks */}
-          <div className="lg:col-span-8 space-y-12">
+          <div className="lg:col-span-8 space-y-12 reveal-left">
             {pageData.contentBlocks.map((block, idx) => (
               <div
                 key={idx}
@@ -101,7 +101,7 @@ export default function GurugulamPage() {
           </div>
 
           {/* Right Side: Metrics */}
-          <div className="lg:col-span-4 sticky top-28 bg-gradient-to-tr from-brand-blue/5 to-slate-100 p-8 sm:p-10 rounded-3xl border border-slate-200">
+          <div className="lg:col-span-4 sticky top-28 bg-gradient-to-tr from-brand-blue/5 to-slate-100 p-8 sm:p-10 rounded-3xl border border-slate-200 reveal-right">
             <h3 className="font-extrabold text-slate-900 text-xl mb-6 tracking-tight">Gurugulam Metrics</h3>
             <div className="space-y-8">
               {pageData.metrics.map((metric, idx) => (

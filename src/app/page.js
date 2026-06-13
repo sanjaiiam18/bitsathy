@@ -573,7 +573,7 @@ export default function Home() {
       {/* 3. About Preview Section */}
       <section id="about" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 reveal-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-4">
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
                 Welcome to BIT Sathy
@@ -603,7 +603,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 reveal-right">
             {campusHighlights.slice(0, 3).map((hl, index) => (
               <div
                 key={index}
@@ -673,10 +673,10 @@ export default function Home() {
 
           {/* Grid of Programs */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredDepartments.slice(0, 6).map((dept) => (
+            {filteredDepartments.slice(0, 6).map((dept, index) => (
               <div
                 key={dept.id}
-                className={`group p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80 flex flex-col justify-between ${dept.glowClass}`}
+                className={`group p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80 flex flex-col justify-between ${dept.glowClass} reveal-scale ${index % 3 === 0 ? "delay-75" : index % 3 === 1 ? "delay-150" : "delay-200"}`}
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
@@ -746,7 +746,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] z-0" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-16">
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 reveal-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-4">
                 <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
                   Placements & Careers
@@ -780,7 +780,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 p-8 rounded-3xl bg-white border border-slate-200/80 shadow-md">
+            <div className="lg:col-span-5 p-8 rounded-3xl bg-white border border-slate-200/80 shadow-md reveal-right">
               <h4 className="font-extrabold text-xl mb-6 text-slate-900">Why BIT Placements stand out?</h4>
               <ul className="space-y-4 text-slate-600 font-medium">
                 <li className="flex items-start gap-3">
@@ -878,7 +878,7 @@ export default function Home() {
             {glimpsesData[activeGlimpseTab].map((glimpse, idx) => (
               <div
                 key={idx}
-                className="group relative bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm transition-all duration-305 hover:shadow-xl hover:border-slate-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
+                className={`group relative bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm transition-all duration-305 hover:shadow-xl hover:border-slate-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden reveal-scale ${idx % 3 === 0 ? "delay-75" : idx % 3 === 1 ? "delay-150" : "delay-200"}`}
               >
                 {/* Visual Left Line accent depending on the index of the card */}
                 <div className={`absolute left-0 top-0 bottom-0 w-[5px] transition-all duration-300 ${
@@ -939,7 +939,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 reveal-scale delay-75">
               <div className="p-8">
                 <div className="text-xs font-bold text-brand-purple uppercase tracking-wider mb-3">Technical Fest</div>
                 <h4 className="text-xl font-extrabold text-slate-900 mb-4">V-Prayukti National Conference</h4>
@@ -953,7 +953,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 reveal-scale delay-150">
               <div className="p-8">
                 <div className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-3">Green Initiatives</div>
                 <h4 className="text-xl font-extrabold text-slate-900 mb-4">Sustainable Campus Award</h4>
@@ -967,7 +967,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300">
+            <div className="bg-white rounded-3xl border border-slate-200/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 reveal-scale delay-200">
               <div className="p-8">
                 <div className="text-xs font-bold text-brand-orange uppercase tracking-wider mb-3">Hackathons</div>
                 <h4 className="text-xl font-extrabold text-slate-900 mb-4">Smart India Hackathon Winners</h4>

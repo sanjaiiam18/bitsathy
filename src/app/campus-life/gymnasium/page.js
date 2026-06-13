@@ -109,7 +109,7 @@ export default function GymnasiumPage() {
         {/* Light overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
  
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center text-slate-900 flex flex-col items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center text-slate-900 flex flex-col items-center reveal">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
             <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -155,7 +155,7 @@ export default function GymnasiumPage() {
       </section>
 
       {/* Gym Stats Grid */}
-      <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-20">
+      <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 mb-20 reveal-scale">
         <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 lg:divide-x divide-slate-100 text-center">
           <div className="flex flex-col justify-center p-2">
             <span className="text-4xl font-extrabold text-brand-blue">5,000+</span>
@@ -180,7 +180,7 @@ export default function GymnasiumPage() {
       <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Left Column: Interactive Selector */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 reveal-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-2">
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
                 Explore The Facility
@@ -222,7 +222,7 @@ export default function GymnasiumPage() {
           </div>
 
           {/* Right Column: Focal Card */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 reveal-right">
             <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl relative overflow-hidden transition-all duration-500">
               {/* Colored Glow Accent at top */}
               <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${zones[activeZone].color}`} />

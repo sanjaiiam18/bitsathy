@@ -36,7 +36,7 @@ export default function DeanAdministration() {
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-slate-900 flex flex-col justify-between h-full pt-32 pb-16 items-center text-center">
-          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl reveal">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -76,7 +76,7 @@ export default function DeanAdministration() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Dean Profile Card */}
-          <div className="lg:col-span-5 flex flex-col items-center">
+          <div className="lg:col-span-5 flex flex-col items-center reveal-left">
             <div className="w-full max-w-sm bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 text-center">
               <div className="aspect-[4/5] w-full rounded-2xl bg-slate-150 flex items-center justify-center border border-slate-200 relative mb-6 overflow-hidden">
                 <img
@@ -95,7 +95,7 @@ export default function DeanAdministration() {
           </div>
 
           {/* Core Duties / Statement */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-8 reveal-right">
             <div>
               <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
                 Academic Operations &amp; <span className="text-brand-purple">Strategic Development</span>
@@ -107,7 +107,7 @@ export default function DeanAdministration() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {responsibilities.map((res, idx) => (
-                <div key={idx} className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm">
+                <div key={idx} className={`p-6 rounded-3xl bg-white border border-slate-200 shadow-sm reveal-scale ${idx % 2 === 0 ? "delay-75" : "delay-150"}`}>
                   <h3 className="font-extrabold text-slate-800 text-base mb-2">{res.title}</h3>
                   <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-semibold">{res.desc}</p>
                 </div>

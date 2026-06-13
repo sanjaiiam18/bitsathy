@@ -1,5 +1,6 @@
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ScrollRevealProvider from "@/components/ScrollRevealProvider";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -22,7 +23,10 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${outfit.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ScrollRevealProvider />
+        {children}
+      </body>
     </html>
   );
 }

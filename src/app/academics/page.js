@@ -62,7 +62,7 @@ export default function Academics() {
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-slate-900 flex flex-col justify-between h-full pt-32 pb-16 items-center text-center">
-          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl reveal">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
@@ -97,24 +97,23 @@ export default function Academics() {
         </div>
       </section>
 
-      {/* Academic Highlights Cards */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
+          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm reveal-scale delay-75">
             <h3 className="font-extrabold text-brand-blue text-lg mb-3">Choice Based Credit System</h3>
             <p className="text-slate-600 text-sm leading-relaxed font-semibold">
               Students have the complete freedom to choose courses across different branches, allowing them to gain minor 
               degrees in advanced computing alongside their core mechanical or circuit engineering.
             </p>
           </div>
-          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
+          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm reveal-scale delay-150">
             <h3 className="font-extrabold text-brand-orange text-lg mb-3">Industry-Embedded Core</h3>
             <p className="text-slate-600 text-sm leading-relaxed font-semibold">
               Syllabi are audited every year in cooperation with top global corporates. Over 30% of coursework is handled 
               directly by senior technical consultants and corporate researchers.
             </p>
           </div>
-          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
+          <div className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm reveal-scale delay-200">
             <h3 className="font-extrabold text-brand-purple text-lg mb-3">Project-Based Semester</h3>
             <p className="text-slate-600 text-sm leading-relaxed font-semibold">
               Instead of traditional theoretical memorization, students complete structural prototype models, 
@@ -151,10 +150,10 @@ export default function Academics() {
 
           {/* Grid of Programs */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredDepartments.map((dept) => (
+            {filteredDepartments.map((dept, idx) => (
               <div
                 key={dept.id}
-                className={`group p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80 flex flex-col justify-between ${dept.glowClass}`}
+                className={`group p-8 rounded-3xl bg-white border border-slate-200/60 shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:border-slate-300/80 flex flex-col justify-between ${dept.glowClass} reveal-scale ${idx % 3 === 0 ? "delay-75" : idx % 3 === 1 ? "delay-150" : "delay-200"}`}
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
@@ -218,7 +217,7 @@ export default function Academics() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {coes.map((coe, idx) => (
-            <div key={idx} className="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <div key={idx} className={`p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow reveal-scale ${idx % 3 === 0 ? "delay-75" : idx % 3 === 1 ? "delay-150" : "delay-200"}`}>
               <span className="text-xs font-extrabold text-slate-400 uppercase tracking-widest block mb-2">Partner: {coe.partner}</span>
               <h3 className="font-extrabold text-slate-800 text-base sm:text-lg mb-3">{coe.name}</h3>
               <p className="text-slate-550 text-xs sm:text-sm font-semibold leading-relaxed">
