@@ -71,6 +71,7 @@ export default function Navbar() {
         { name: "Clubs & Societies", href: "/campus-life/clubs-societies" },
         { name: "Campus Facilities", href: "/campus-life/facilities" },
         { name: "Sports Facilities", href: "/campus-life/sports" },
+        { name: "Gymnasium", href: "/campus-life/gymnasium" },
         { name: "College Bus routes", href: "/campus-life/bus" },
         { name: "Hostel & Medical", href: "/campus-life/hostel-medical" },
         { name: "Sustainability & Green", href: "/campus-life/green" }
@@ -127,7 +128,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Bannari Amman Institute of Technology"
-              className="h-13 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-102"
+              className="h-15 sm:h-15 w-auto object-contain transition-transform duration-300 hover:scale-102"
             />
           </Link>
 

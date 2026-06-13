@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollDownButton from "@/components/ScrollDownButton";
 
 // Complete Recruiter Mappings
 const recruitersCategories = {
@@ -394,13 +395,26 @@ export default function Placements() {
       <div className="absolute top-[40%] right-[-15%] w-[45vw] h-[45vw] rounded-full bg-brand-blue/5 blur-[120px] pointer-events-none -z-10" />
 
       {/* Split Hero Section */}
-      <section className="pt-24 pb-20 bg-gradient-to-tr from-slate-100 to-white border-b border-slate-200">
-        <div className="max-w-8xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="relative h-[100vh] bg-white border-b border-slate-200 overflow-hidden flex items-center justify-center">
+        {/* Background Video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+          src="https://www.bitsathy.ac.in/wp-content/uploads/Home.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+        {/* Light overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
+
+        <div className="max-w-8xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-20">
           
           {/* Hero Left Content */}
-          <div className="lg:col-span-6 space-y-6 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/5 border border-brand-purple/10">
-              <span className="text-xs font-bold tracking-widest text-brand-purple uppercase">
+          <div className="lg:col-span-6 space-y-6 text-left text-slate-900">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
+              <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
                 Corporate Relations &amp; Placement Cell
               </span>
             </div>
@@ -410,7 +424,7 @@ export default function Placements() {
                 Opportunity
               </span>
             </h1>
-            <p className="text-slate-655 max-w-2xl text-base sm:text-lg leading-relaxed font-semibold">
+            <p className="text-slate-600 max-w-2xl text-base sm:text-lg leading-relaxed font-semibold">
               Bannari Amman Institute of Technology bridges academic capability with professional opportunities, delivering record placements and high-caliber salary packages yearly.
             </p>
             
@@ -489,6 +503,7 @@ export default function Placements() {
           </div>
 
         </div>
+        <ScrollDownButton className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30" />
       </section>
 
       {/* Floating Numerical Dashboard Stats */}

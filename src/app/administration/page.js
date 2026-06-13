@@ -4,6 +4,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default function AdministrationHome() {
   const cards = [
@@ -65,19 +66,52 @@ export default function AdministrationHome() {
       <div className="absolute top-2/4 right-10 w-96 h-96 rounded-full bg-brand-purple/5 blur-[120px] pointer-events-none -z-10" />
 
       {/* Hero Header */}
-      <section className="py-20 bg-gradient-to-tr from-slate-100 to-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-4">
-            <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-              Governing Structures
-            </span>
+      <section className="relative h-[100vh] bg-white border-b border-slate-200 overflow-hidden">
+        {/* Background Video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+          src="https://www.bitsathy.ac.in/wp-content/uploads/Home.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+        {/* Light overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-slate-900 flex flex-col justify-between h-full pt-32 pb-16 items-center text-center">
+          <div className="flex-1 flex flex-col items-center justify-center max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
+              <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
+                Governing Administration
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
+              Institutional <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Leadership Desk</span>
+            </h1>
+            <p className="text-slate-700 max-w-3xl text-base sm:text-lg leading-relaxed font-semibold">
+              Our governing bodies, administrators, and academic deans work closely to ensure transparent, progressive regulations that place student progress at the center of all actions.
+            </p>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-            Institutional <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Administration</span>
-          </h1>
-          <p className="text-slate-600 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-semibold">
-            Bannari Amman Institute of Technology operates under a transparent, participative governance model led by industry stalwarts, renowned academics, and visionary leaders.
-          </p>
+
+          <ScrollDownButton className="my-4" />
+
+          {/* Quick administration indicator cards */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
+            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Council</span>
+              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Strategic Board</span>
+            </div>
+            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Autonomous</span>
+              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Academic Regulations</span>
+            </div>
+            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">4 Desks</span>
+              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Executive Offices</span>
+            </div>
+          </div>
         </div>
       </section>
 

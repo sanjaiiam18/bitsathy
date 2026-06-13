@@ -5,7 +5,7 @@ export const siteContent = {
     "vision-mission": {
       title: "Vision & Mission",
       subtitle: "Our Guiding Light",
-      intro: "Bannari Amman Institute of Technology operates under a clear, value-based mandate designed to place student growth, scientific research, and ethical responsibility at the center of all operations.",
+      intro: "Bannari Amman Institute of Technology operates under a clear, value-based mandate designed to place student growth, scientific research, and ethical responsibility at the center of all operations. We strive to maintain state-of-the-art academic infrastructure and support innovative pedagogical frameworks that foster global standards of learning.",
       metrics: [
         { label: "Faculty Members", value: "350+" },
         { label: "Doctorates", value: "140+" },
@@ -29,7 +29,7 @@ export const siteContent = {
     "milestones": {
       title: "Institutional Milestones",
       subtitle: "A History of Academic Leadership",
-      intro: "From our humble beginnings in 1996 to becoming one of India's premier autonomous colleges, here is a record of our key growth milestones.",
+      intro: "From our humble beginnings in 1996 to becoming one of India's premier autonomous colleges, here is a record of our key growth milestones. Discover the history of our structural evolution, academic expansions, and top-tier accreditation landmarks achieved over the past three decades.",
       metrics: [
         { label: "Established In", value: "1996" },
         { label: "Years of Service", value: "30" },
@@ -61,7 +61,7 @@ export const siteContent = {
     "achievements": {
       title: "Achievements & Rankings",
       subtitle: "Recognitions of Excellence",
-      intro: "BIT Sathy stands as a beacon of performance, regularly winning accolades at the national level for academic quality, campus green initiatives, and student innovation.",
+      intro: "BIT Sathy stands as a beacon of performance, regularly winning accolades at the national level for academic quality, campus green initiatives, and student innovation. Our consistent placement rankings and continuous victories in national hackathons reflect our dedication to technological excellence.",
       metrics: [
         { label: "NIRF Rank band", value: "101-150" },
         { label: "Smart India wins", value: "3 Years" },
@@ -85,7 +85,7 @@ export const siteContent = {
     "approvals-circulars": {
       title: "Approvals & Certifications",
       subtitle: "Accredited & Affiliated",
-      intro: "Transparency and quality compliance are key to our administration. View the official bodies that validate and govern our academic programmes.",
+      intro: "Transparency and quality compliance are key to our administration. View the official bodies that validate and govern our academic programmes, ensuring all degrees awarded comply fully with national regulatory councils.",
       metrics: [
         { label: "AICTE Approved", value: "Yes" },
         { label: "UGC Recognized", value: "Yes" },
@@ -111,7 +111,7 @@ export const siteContent = {
     "programmes-offered": {
       title: "Programmes Offered",
       subtitle: "Undergraduate and Postgraduate Degrees",
-      intro: "BIT Sathy offers a wide range of specialized undergraduate and postgraduate courses in engineering, technology, and management.",
+      intro: "BIT Sathy offers a wide range of specialized undergraduate and postgraduate courses in engineering, technology, and management. Each program is designed to provide complete autonomous curriculum flexibility aligned with modern industry competencies and project-led learning formats.",
       metrics: [
         { label: "UG Branches", value: "14+" },
         { label: "PG Branches", value: "6+" },
@@ -135,7 +135,7 @@ export const siteContent = {
     "coecorner": {
       title: "Office of the Controller of Examinations",
       subtitle: "CoE Corner",
-      intro: "The Office of the CoE is responsible for scheduling exams, managing evaluation systems, declaring results, and issuing official transcript certificates.",
+      intro: "The Office of the Controller of Examinations is responsible for scheduling exams, managing evaluation systems, declaring results, and issuing official transcript certificates. We prioritize integrity, absolute confidentiality, and rapid turnaround in all statutory examinations.",
       metrics: [
         { label: "Exam Formats", value: "CBT & Written" },
         { label: "Result Turnaround", value: "15 Days" },
@@ -159,7 +159,7 @@ export const siteContent = {
     "regulations": {
       title: "Academic Regulations",
       subtitle: "UGC Autonomous Regulations",
-      intro: "Our regulations ensure high academic standards while offering flexibility. We follow the Choice Based Credit System (CBCS) to give students customization power.",
+      intro: "Our regulations ensure high academic standards while offering flexibility. We follow the Choice Based Credit System (CBCS) to give students customization power, allowing them to choose electives and study modules matching their career pathways.",
       metrics: [
         { label: "Current Regulation", value: "R-2023" },
         { label: "Min Credits for UG", value: "160-165" },
@@ -183,7 +183,7 @@ export const siteContent = {
     "academic-calendar": {
       title: "Academic Calendar",
       subtitle: "Semester Schedule & Timelines",
-      intro: "Plan your semester with the official academic calendar, detailing class commencement dates, exam schedules, and institutional holidays.",
+      intro: "Plan your semester with the official academic calendar, detailing class commencement dates, exam schedules, and institutional holidays. Stay updated with critical schedules for continuous assessments, practical training, and cultural events.",
       metrics: [
         { label: "Working Days", value: "90 / Semester" },
         { label: "Exams Schedule", value: "Nov & April" },
@@ -207,7 +207,7 @@ export const siteContent = {
     "learning-centre": {
       title: "Learning Centre (Library Hub)",
       subtitle: "Our Repository of Knowledge",
-      intro: "The central library is a state-of-the-art resource center, featuring vast collections of physical books, international research journals, and online digital subscriptions.",
+      intro: "The central library is a state-of-the-art resource center, featuring vast collections of physical books, international research journals, and online digital subscriptions. It provides a peaceful learning biosphere where students, researchers, and faculty can collaborate and study.",
       metrics: [
         { label: "Physical Volumes", value: "85,000+" },
         { label: "E-Journals", value: "5,000+" },
@@ -215,8 +215,9 @@ export const siteContent = {
       ],
       contentBlocks: [
         {
-          title: "Digital Library Access",
-          desc: "Equipped with high-speed internet terminals offering remote access to IEEE Explore, ScienceDirect, Springer Link, ASME, ASCE, and Delnet databases."
+          title: "Digital Library Access & Resources",
+          desc: "Equipped with high-speed internet terminals offering remote access to IEEE Explore, ScienceDirect, Springer Link, ASME, ASCE, and Delnet databases. Our physical shelves span over 85,000 reference volumes, giving student researchers standard access to global advancements.",
+          image: "/library_reading_hall.png"
         },
         {
           title: "Media & NPTEL Centre",
@@ -231,7 +232,7 @@ export const siteContent = {
     "elcc": {
       title: "English Language & Communication Cell",
       subtitle: "Mastering Global Communications",
-      intro: "ELCC is dedicated to boosting communication capabilities, offering active workshops, language software labs, and TOEFL/IELTS preparation guidance.",
+      intro: "ELCC is dedicated to boosting communication capabilities, offering active workshops, language software labs, and TOEFL/IELTS preparation guidance. Our curriculum supports day scholars and hostel residents in mastering global business communications and interview presentation skills.",
       metrics: [
         { label: "Language Lab Systems", value: "120" },
         { label: "Prep Tools", value: "IELTS & BEC" },
@@ -255,7 +256,7 @@ export const siteContent = {
     "capability-enhancement-schemes": {
       title: "Capability Enhancement Schemes",
       subtitle: "Nurturing Every Learner",
-      intro: "We believe in supportive, inclusive education. Our enhancement schemes are designed to assist slow learners, coach advanced students, and offer career mentorship.",
+      intro: "We believe in supportive, inclusive education. Our enhancement schemes are designed to assist slow learners, coach advanced students, and offer career mentorship. We run daily remedial classes and assign dedicated advisors to ensure no student is left behind.",
       metrics: [
         { label: "Student Mentor Ratio", value: "1:15" },
         { label: "Coaching Sessions", value: "Weekly" },
@@ -281,7 +282,7 @@ export const siteContent = {
     "clubs-societies": {
       title: "Clubs & Societies",
       subtitle: "Discover Your Talents",
-      intro: "Campus life is vibrant and rich with co-curricular opportunities. Join one of our 15+ student-run clubs to collaborate, innovate, and develop leadership qualities.",
+      intro: "Campus life is vibrant and rich with co-curricular opportunities. Join one of our 15+ student-run clubs to collaborate, innovate, and develop leadership qualities. From tech hackathons to fine arts, find your community outside the classroom.",
       metrics: [
         { label: "Active Clubs", value: "15+" },
         { label: "Annual Events", value: "40+" },
@@ -305,7 +306,7 @@ export const siteContent = {
     "facilities": {
       title: "Campus Facilities",
       subtitle: "A World-Class Infrastructure",
-      intro: "BIT Sathy features a self-contained infrastructure, providing students with smart lecture halls, advanced research laboratories, recreation halls, and essential support services.",
+      intro: "BIT Sathy features a self-contained infrastructure, providing students with smart lecture halls, advanced research laboratories, recreation halls, and essential support services. Every square foot of our campus is built to foster academic efficiency and comfortable living.",
       metrics: [
         { label: "Smart Classrooms", value: "90+" },
         { label: "Auditoriums", value: "4" },
@@ -314,7 +315,8 @@ export const siteContent = {
       contentBlocks: [
         {
           title: "Smart Lecture Halls",
-          desc: "Classrooms are equipped with interactive smart screens, digital audio systems, and high-speed Wi-Fi, fostering collaborative digital learning."
+          desc: "Classrooms are equipped with interactive smart screens, digital audio systems, and high-speed Wi-Fi. The ergonomic layout facilitates collaborative digital learning, slide shares, and live software programming sessions directly from student laptops.",
+          image: "/smart_classroom.png"
         },
         {
           title: "Auditoriums & Seminar Halls",
@@ -329,7 +331,7 @@ export const siteContent = {
     "sports": {
       title: "Sports & Fitness Infrastructure",
       subtitle: "Fostering Athletic Excellence",
-      intro: "We prioritize physical health alongside academics. BIT offers international standard sports grounds, tracking lanes, and coaching staff.",
+      intro: "We prioritize physical health alongside academics. BIT offers international standard sports grounds, tracking lanes, and coaching staff. Our high-tech fitness centers and outdoor fields support competitive training and recreational wellness for all students.",
       metrics: [
         { label: "Running Track", value: "400m" },
         { label: "Indoor Gyms", value: "2 (Boys/Girls)" },
@@ -338,7 +340,8 @@ export const siteContent = {
       contentBlocks: [
         {
           title: "Athletic Track & Outdoor Grounds",
-          desc: "Features a standard 400m synthetic running track, plus dedicated outdoor courts for Football, Cricket (with nets), Volleyball, Basketball, and Tennis."
+          desc: "Features a standard 400m synthetic running track, plus dedicated outdoor courts for Football, Cricket (with nets), Volleyball, Basketball, and Tennis. Our stadium hosts annual university sports meets and state-level athletic tournaments.",
+          image: "/sports_athletic_track.png"
         },
         {
           title: "Indoor Sports Complex",
@@ -353,7 +356,7 @@ export const siteContent = {
     "bus": {
       title: "College Bus Transport",
       subtitle: "Safe & Reliable Commute",
-      intro: "We run a fleet of modern buses connecting the campus to major neighboring cities and towns, ensuring safe and timely transport for day scholars.",
+      intro: "We run a fleet of modern buses connecting the campus to major neighboring cities and towns, ensuring safe and timely transport for day scholars. Every vehicle is GPS-tracked and operated by experienced transit staff to ensure safety and comfort.",
       metrics: [
         { label: "Total Bus Fleet", value: "45 Buses" },
         { label: "Cities Covered", value: "8+" },
@@ -377,7 +380,7 @@ export const siteContent = {
     "hostel-medical": {
       title: "Hostel & Medical Facilities",
       subtitle: "Your Home Away From Home",
-      intro: "Our residential hosteling system provides separate, secure hostels for boys and girls, complete with organic dining facilities and 24/7 medical support.",
+      intro: "Our residential hosteling system provides separate, secure hostels for boys and girls, complete with organic dining facilities and 24/7 medical support. Experience a nurturing residential community that feels like home while supporting your focused studies.",
       metrics: [
         { label: "Hostel Blocks", value: "8 Blocks" },
         { label: "In-house Clinic", value: "24/7 Support" },
@@ -386,7 +389,8 @@ export const siteContent = {
       contentBlocks: [
         {
           title: "Residential Hostel Blocks",
-          desc: "Rooms are spacious and well-ventilated, offered in single, double, and four-sharing formats with continuous solar hot water, study tables, and high-speed Wi-Fi."
+          desc: "Rooms are spacious and well-ventilated, offered in single, double, and four-sharing formats with continuous solar hot water, study tables, and high-speed Wi-Fi connectivity. It creates a perfect studying environment after lecture hours.",
+          image: "/campus_hostel_room.png"
         },
         {
           title: "Organic Farms & Mess Dinings",
@@ -401,7 +405,7 @@ export const siteContent = {
     "green": {
       title: "Sustainability & Green Initiatives",
       subtitle: "Our Carbon-Neutral Campus",
-      intro: "BIT Sathy is highly dedicated to environmental care, actively utilizing solar energy systems, recycling waste water, and maintaining plastic-free campus regulations.",
+      intro: "BIT Sathy is highly dedicated to environmental care, actively utilizing solar energy systems, recycling waste water, and maintaining plastic-free campus regulations. Learn how our green biosphere works as a live lab for sustainable engineering designs.",
       metrics: [
         { label: "Solar Energy Grid", value: "1.2 Megawatts" },
         { label: "Rainwater Harvesting", value: "100% Covered" },
@@ -427,7 +431,7 @@ export const siteContent = {
     "advisory-board": {
       title: "Research Advisory Board",
       subtitle: "Guiding Scientific Innovation",
-      intro: "The Research Advisory Board comprises eminent scientists, industrial directors, and academic professors who guide our scientific research projects and allocate development funds.",
+      intro: "The Research Advisory Board comprises eminent scientists, industrial directors, and academic professors who guide our scientific research projects and allocate development funds. The board reviews all ongoing projects to align our efforts with international scientific advancements.",
       metrics: [
         { label: "Board Members", value: "12" },
         { label: "Annual R&D Budget", value: "Rs. 2 Crores+" },
@@ -451,7 +455,7 @@ export const siteContent = {
     "academic": {
       title: "Academic Research & Ph.D.",
       subtitle: "Fostering Scholarly Inquiry",
-      intro: "BIT Sathy is an approved research center under Anna University, offering comprehensive Ph.D. registrations, research guides, and doctoral coursework.",
+      intro: "BIT Sathy is an approved research center under Anna University, offering comprehensive Ph.D. registrations, research guides, and doctoral coursework. Scholars get access to funded projects, state-of-the-art software systems, and international scientific networks.",
       metrics: [
         { label: "Ph.D. Research Centres", value: "10 approved" },
         { label: "Ph.D. Scholars", value: "150+" },
@@ -475,7 +479,7 @@ export const siteContent = {
     "facilities": {
       title: "Research Facilities",
       subtitle: "State-of-the-Art Laboratories",
-      intro: "Our research facilities house advanced analytical instruments, computational nodes, and characterization labs to support scientific research.",
+      intro: "Our research facilities house advanced analytical instruments, computational nodes, and characterization labs to support scientific research. Students and faculty use these standard setups to complete structural prototyping and complex engineering simulations.",
       metrics: [
         { label: "Analytical Labs", value: "8 Centralized" },
         { label: "HPC Clusters", value: "1 (32 Nodes)" },
@@ -484,7 +488,8 @@ export const siteContent = {
       contentBlocks: [
         {
           title: "Central Instrumentation Facility (CIF)",
-          desc: "Features scanning electron microscopes, HPLC testing setups, spectrophotometers, and chromatography systems for advanced analysis."
+          desc: "Features scanning electron microscopes, HPLC testing setups, spectrophotometers, and chromatography systems for advanced chemical, material, and electrical analysis.",
+          image: "/research_analytical_lab.png"
         },
         {
           title: "High-Performance Computing Lab",
@@ -499,7 +504,7 @@ export const siteContent = {
     "centres": {
       title: "Research Centres",
       subtitle: "Specialized Hubs",
-      intro: "Department-specific research centers are approved by Anna University, focus on specialized engineering challenges, and collaborate on government grants.",
+      intro: "Department-specific research centers are approved by Anna University, focus on specialized engineering challenges, and collaborate on government grants. These hubs bridge the gap between academic theories and practical technology solutions for the public.",
       metrics: [
         { label: "Approved Centres", value: "10" },
         { label: "Funded Projects", value: "15+" },
@@ -523,7 +528,7 @@ export const siteContent = {
     "qip": {
       title: "Quality Improvement Programme (QIP)",
       subtitle: "Elevating Faculty Excellence",
-      intro: "The Quality Improvement Programme sponsors faculty members to pursue advanced doctoral studies, participate in international conferences, and complete corporate training.",
+      intro: "The Quality Improvement Programme sponsors faculty members to pursue advanced doctoral studies, participate in international conferences, and complete corporate training. This keeps our academic delivery aligned with global engineering breakthroughs.",
       metrics: [
         { label: "Faculty Sponsored", value: "40+" },
         { label: "Industrial Training", value: "100% Covered" },
@@ -547,7 +552,7 @@ export const siteContent = {
     "newsletter": {
       title: "R&D Newsletter",
       subtitle: "Chronicling Scientific Breakthroughs",
-      intro: "Our quarterly R&D newsletter documents research grants received, patents filed, academic publications, and faculty honors.",
+      intro: "Our quarterly R&D newsletter documents research grants received, patents filed, academic publications, and faculty honors. It serves as a comprehensive archive of the scientific strides and technological achievements made by the college.",
       metrics: [
         { label: "Issues / Year", value: "4 Quarterly" },
         { label: "Recent Grants", value: "Rs. 75 Lakhs" },
@@ -573,7 +578,7 @@ export const siteContent = {
   gurugulam: {
     title: "Gurugulam Learning System",
     subtitle: "A Unique Educational Biosphere",
-    intro: "Gurugulam is our flagship coding and residential engineering lab model, where students live, code, and complete real-world corporate software designs under professional guidance.",
+    intro: "Gurugulam is our flagship coding and residential engineering lab model, where students live, code, and complete real-world corporate software designs under professional guidance. This system bridges the gap between academic theory and practical corporate realities through 24/7 access to development resources and direct mentoring.",
     metrics: [
       { label: "Gurugulam Members", value: "250+" },
       { label: "Placement Rate", value: "100%" },
@@ -582,7 +587,8 @@ export const siteContent = {
     contentBlocks: [
       {
         title: "What is Gurugulam?",
-        desc: "Inspired by the ancient Gurukul methodology, the Gurugulam system bridges the gap between academic theory and practical corporate realities. Students reside in a dedicated facility equipped with 24/7 high-speed internet, collaborative workspaces, and direct access to software coaches."
+        desc: "Inspired by the ancient Gurukul methodology, the Gurugulam system bridges the gap between academic theory and practical corporate realities. Students reside in a dedicated facility equipped with 24/7 high-speed internet, collaborative workspaces, and direct access to software coaches.",
+        image: "/gurugulam_coding_hub.png"
       },
       {
         title: "The Project-Led Curriculum",
@@ -597,7 +603,7 @@ export const siteContent = {
   "product-innovation-centre": {
     title: "Product Innovation Centre (PIC)",
     subtitle: "Turn Ideas into Products",
-    intro: "The Product Innovation Centre provides young engineering minds with prototyping machines, startup guidance, seed funds, and industrial design software to transform ideas into market-ready products.",
+    intro: "The Product Innovation Centre provides young engineering minds with prototyping machines, startup guidance, seed funds, and industrial design software to transform ideas into market-ready products. The centre empowers students to design electronic layouts, print 3D parts, and pitch business plans to venture funds.",
     metrics: [
       { label: "Startups Incubated", value: "18" },
       { label: "Seed Funding", value: "Rs. 50 Lakhs+" },
@@ -606,7 +612,8 @@ export const siteContent = {
     contentBlocks: [
       {
         title: "Prototyping & Design Facilities",
-        desc: "Equipped with advanced 3D printers, laser cutters, PCB prototyping devices, CNC machinery, and high-end workstations with SolidWorks, AutoCAD, and ANSYS software."
+        desc: "Equipped with advanced 3D printers, laser cutters, PCB prototyping devices, CNC machinery, and high-end workstations with SolidWorks, AutoCAD, and ANSYS software. Student teams get hands-on experience converting electronic schematics and CAD layouts into physical prototypes.",
+        image: "/product_innovation_centre_prototyping.png"
       },
       {
         title: "Incubation & Startup Accelerator",

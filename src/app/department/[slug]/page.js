@@ -5,6 +5,7 @@ import { departmentsContent } from "@/data/departmentsContent";
 import DepartmentPageClient from "@/components/DepartmentPageClient";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ScrollDownButton from "@/components/ScrollDownButton";
 
 // Enable static generation for all departments
 export async function generateStaticParams() {
@@ -144,9 +145,21 @@ export default async function DepartmentPage({ params }) {
       <div className="absolute top-2/4 right-10 w-96 h-96 rounded-full bg-brand-purple/5 blur-[120px] pointer-events-none -z-10" />
 
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-tr from-slate-100 to-white border-b border-slate-200">
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
+      <section className="relative h-[100vh] bg-white border-b border-slate-200 overflow-hidden flex items-center justify-center">
+        {/* Background Video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+          src="https://www.bitsathy.ac.in/wp-content/uploads/Home.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+        {/* Light overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-white/95 z-10 backdrop-blur-[1px]" />
+
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20 text-slate-900">
+          <div className="flex flex-wrap items-center gap-2 mb-6">
             <Link href="/academics" className="text-xs font-bold text-brand-blue hover:underline">
               Academics
             </Link>
@@ -155,8 +168,9 @@ export default async function DepartmentPage({ params }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-4">
+            <div className="lg:col-span-8 text-left">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
                 <span className="text-xs font-extrabold tracking-widest text-brand-blue uppercase">
                   Department Code: {dept.code}
                 </span>
@@ -202,6 +216,7 @@ export default async function DepartmentPage({ params }) {
             </div>
           </div>
         </div>
+        <ScrollDownButton className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30" />
       </section>
 
       {/* Main Tabbed Navigation Section */}
