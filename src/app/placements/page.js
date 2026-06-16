@@ -343,6 +343,37 @@ function CompanyCard({ name, logo }) {
 export default function Placements() {
   const [activeRecruiterTab, setActiveRecruiterTab] = useState("product");
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [pageData, setPageData] = useState(null);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    fetch(isPreview ? "/api/content?path=/placements&preview=true" : "/api/content?path=/placements")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData(data.page);
+        }
+      })
+      .catch((err) => console.error("Error loading placements page content:", err));
+
+    // Listen to real-time editor preview updates
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
   const [hoveredDest, setHoveredDest] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -415,30 +446,48 @@ export default function Placements() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-                Corporate Relations &amp; Placement Cell
+                {pageData ? pageData.subtitle : "Corporate Relations & Placement Cell"}
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 tracking-tight leading-none">
-              Where Ambition Meets <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-brand-purple to-brand-orange">
-                Opportunity
-              </span>
+              {pageData ? pageData.title : (
+                <>
+                  Where Ambition Meets <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-brand-purple to-brand-orange">
+                    Opportunity
+                  </span>
+                </>
+              )}
             </h1>
             <p className="text-slate-600 max-w-2xl text-base sm:text-lg leading-relaxed font-semibold">
-              Bannari Amman Institute of Technology bridges academic capability with professional opportunities, delivering record placements and high-caliber salary packages yearly.
+              {pageData ? pageData.intro : "Bannari Amman Institute of Technology bridges academic capability with professional opportunities, delivering record placements and high-caliber salary packages yearly."}
             </p>
             
             {/* Quick stats tags inside hero */}
             <div className="flex flex-wrap gap-4 pt-2">
-              <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
-                🚀 <span className="text-brand-blue">44.0 LPA</span> Highest Package
-              </div>
-              <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
-                💼 <span className="text-brand-orange">1920+</span> Offers Secured
-              </div>
-              <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
-                🏢 <span className="text-brand-purple">350+</span> Recruiters
-              </div>
+              {pageData?.metrics && pageData.metrics.length > 0 ? (
+                pageData.metrics.map((metric, idx) => (
+                  <div key={idx} className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
+                    {idx === 0 ? "🚀" : idx === 1 ? "💼" : "🏢"}{" "}
+                    <span className={idx === 0 ? "text-brand-blue" : idx === 1 ? "text-brand-orange" : "text-brand-purple"}>
+                      {metric.value}
+                    </span>{" "}
+                    {metric.label}
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
+                    🚀 <span className="text-brand-blue">44.0 LPA</span> Highest Package
+                  </div>
+                  <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
+                    💼 <span className="text-brand-orange">1920+</span> Offers Secured
+                  </div>
+                  <div className="px-5 py-2.5 bg-white border border-slate-200 shadow-sm rounded-xl font-extrabold text-xs sm:text-sm text-slate-700">
+                    🏢 <span className="text-brand-purple">350+</span> Recruiters
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

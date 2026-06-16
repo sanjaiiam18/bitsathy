@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
@@ -8,6 +8,37 @@ import ScrollDownButton from "@/components/ScrollDownButton";
 export default function GymnasiumPage() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [activeZone, setActiveZone] = useState(0);
+  const [pageData, setPageData] = useState(null);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    fetch(isPreview ? "/api/content?path=/campus-life/gymnasium&preview=true" : "/api/content?path=/campus-life/gymnasium")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData(data.page);
+        }
+      })
+      .catch((err) => console.error("Error loading gym page content:", err));
+
+    // Listen to real-time editor preview updates
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
 
   // BMI Calculator States
   const [weight, setWeight] = useState("");
@@ -113,17 +144,20 @@ export default function GymnasiumPage() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
             <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-              Live Tour & Showcase
+              {pageData ? pageData.subtitle : "Live Tour & Showcase"}
             </span>
           </div>
           
           <h1 className="text-4xl sm:text-6xl font-black mb-6 tracking-tight max-w-4xl leading-tight text-slate-900">
-            State-of-the-Art <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-blue">Gymnasium Hub</span>
+            {pageData ? pageData.title : (
+              <>
+                State-of-the-Art <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-blue">Gymnasium Hub</span>
+              </>
+            )}
           </h1>
           
           <p className="text-slate-600 max-w-2xl text-base sm:text-lg mb-8 font-medium leading-relaxed">
-            Take a visual tour inside the BIT Sathy main gymnasium. Featuring over 5,000 sq ft of indoor functional workouts, 
-            premium international equipment, and expert trainers.
+            {pageData ? pageData.intro : "Take a visual tour inside the BIT Sathy main gymnasium. Featuring over 5,000 sq ft of indoor functional workouts, premium international equipment, and expert trainers."}
           </p>
 
           {/* Interactive Video Controller */}

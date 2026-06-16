@@ -370,6 +370,37 @@ const glimpsesData = {
 export default function Home() {
   const [activeTab, setActiveTab] = useState("All");
   const [activeGlimpseTab, setActiveGlimpseTab] = useState("About & Administration");
+  const [pageData, setPageData] = useState(null);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    fetch(isPreview ? "/api/content?path=/&preview=true" : "/api/content?path=/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData(data.page);
+        }
+      })
+      .catch((err) => console.error("Error loading home page content from DB:", err));
+
+    // Listen to real-time editor preview updates
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
 
   // Numeric stats counter effect
   const [stats, setStats] = useState({
@@ -442,23 +473,25 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 mb-6 shadow-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-brand-orange animate-pulse"></span>
             <span className="text-[11px] sm:text-xs font-extrabold tracking-wider text-slate-700 uppercase">
-              NAAC A+ ACCREDITED | AUTONOMOUS
+              {pageData ? pageData.subtitle : "NAAC A+ ACCREDITED | AUTONOMOUS"}
             </span>
           </div>
 
           {/* Title */}
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] mb-6 text-slate-900">
-            Empowering Minds,<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-brand-purple to-brand-orange">
-              Designing Tomorrows
-            </span>
+            {pageData ? pageData.title : (
+              <>
+                Empowering Minds,<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-brand-purple to-brand-orange">
+                  Designing Tomorrows
+                </span>
+              </>
+            )}
           </h2>
 
           {/* Subtitle */}
           <p className="text-slate-600 text-base sm:text-lg mb-10 max-w-3xl font-medium leading-relaxed">
-            Experience the future of engineering at Bannari Amman Institute of Technology. 
-            Our 181-acre campus near River Bhavani provides an ideal biosphere for young innovators 
-            seeking core technology competence.
+            {pageData ? pageData.intro : "Experience the future of engineering at Bannari Amman Institute of Technology. Our 181-acre campus near River Bhavani provides an ideal biosphere for young innovators seeking core technology competence."}
           </p>
 
           {/* Hero CTAs */}
@@ -635,6 +668,102 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 3.5 Dynamic Page Sections */}
+      {pageData && pageData.sections && pageData.sections.length > 0 && (
+        <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+          {pageData.sections.map((block, idx) => {
+            const isImgLeft = block.layout_type === "image-left";
+            const isImgRight = block.layout_type === "image-right" || block.image_url;
+            const isFullWidth = block.layout_type === "full-width";
+            const isTextCenter = block.alignment === "center";
+            const isTextRight = block.alignment === "right";
+
+            return (
+              <div
+                key={idx}
+                className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow"
+              >
+                {isFullWidth ? (
+                  <div className="space-y-6">
+                    <div className={`space-y-3.5 ${isTextCenter ? "text-center" : isTextRight ? "text-right" : "text-left"}`}>
+                      {block.subtitle && (
+                        <span className="text-xs font-bold tracking-wider text-brand-blue uppercase">
+                          {block.subtitle}
+                        </span>
+                      )}
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        {block.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
+                        {block.desc}
+                      </p>
+                      {block.btn_text && (
+                        <a
+                          href={block.btn_url || "#"}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          {block.btn_text} ➔
+                        </a>
+                      )}
+                    </div>
+                    {block.image_url && (
+                      <div className="relative overflow-hidden rounded-2xl aspect-video border border-slate-200 bg-slate-50 shadow-inner">
+                        <img
+                          src={block.image_url}
+                          alt={block.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div
+                      className={`space-y-4.5 ${
+                        isImgLeft || isImgRight ? "md:col-span-7" : "md:col-span-12"
+                      } ${isImgLeft ? "md:order-2" : ""} ${isTextCenter ? "text-center" : isTextRight ? "text-right" : "text-left"}`}
+                    >
+                      {block.subtitle && (
+                        <span className="text-xs font-bold tracking-wider text-brand-blue uppercase">
+                          {block.subtitle}
+                        </span>
+                      )}
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        {block.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
+                        {block.desc}
+                      </p>
+                      {block.btn_text && (
+                        <a
+                          href={block.btn_url || "#"}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          {block.btn_text} ➔
+                        </a>
+                      )}
+                    </div>
+                    {(isImgLeft || isImgRight) && block.image_url && (
+                      <div
+                        className={`md:col-span-5 relative overflow-hidden rounded-2xl aspect-video border border-slate-200 bg-slate-50 shadow-inner ${
+                          isImgLeft ? "md:order-1" : ""
+                        }`}
+                      >
+                        <img
+                          src={block.image_url}
+                          alt={block.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </section>
+      )}
 
       {/* 4. Academics Preview Section */}
       <section id="academics" className="py-24 bg-slate-100/50 border-y border-slate-200/50 relative">

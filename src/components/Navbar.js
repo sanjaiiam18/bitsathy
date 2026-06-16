@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import PreviewListener from "./PreviewListener";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -120,6 +121,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 glass-nav transition-all duration-300 border-b border-slate-200/50">
+      <PreviewListener />
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
