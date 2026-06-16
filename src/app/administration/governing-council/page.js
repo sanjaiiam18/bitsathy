@@ -1,11 +1,85 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default function GoverningCouncil() {
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    const fetchUrl = `/api/content?path=/administration/governing-council${isPreview ? "&preview=true" : ""}`;
+
+    fetch(fetchUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData({
+            title: data.page.title,
+            subtitle: data.page.subtitle,
+            intro: data.page.intro,
+            metrics: data.page.metrics || [],
+            sections: data.page.sections || [],
+          });
+        } else {
+          loadStaticFallback();
+        }
+      })
+      .catch(() => {
+        loadStaticFallback();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
+
+  const loadStaticFallback = () => {
+    setPageData({
+      title: "Governing Council",
+      subtitle: "Statutory Board",
+      intro: "The Governing Council is the apex statutory body overseeing administrative policy, industrial collaborations, and strategic initiatives to establish the highest pedagogical standards.",
+      metrics: [
+        { label: "Compliance Regulations", value: "UGC" },
+        { label: "Industrial Management", value: "Trustees" },
+        { label: "University Nomination", value: "Affiliation" }
+      ],
+      sections: []
+    });
+  };
+
+  const currentData = pageData || {
+    title: "Governing Council",
+    subtitle: "Statutory Board",
+    intro: "The Governing Council is the apex statutory body overseeing administrative policy, industrial collaborations, and strategic initiatives to establish the highest pedagogical standards.",
+    metrics: [
+      { label: "Compliance Regulations", value: "UGC" },
+      { label: "Industrial Management", value: "Trustees" },
+      { label: "University Nomination", value: "Affiliation" }
+    ],
+    sections: []
+  };
+
   const members = [
     {
       name: "Thiru S. V. Balasubramaniam",
@@ -90,34 +164,30 @@ export default function GoverningCouncil() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-                Statutory Board
+                {currentData.subtitle}
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              Governing <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Council</span>
+              {currentData.title}
             </h1>
             <p className="text-slate-700 max-w-3xl text-base sm:text-lg leading-relaxed font-semibold">
-              The Governing Council is the apex statutory body overseeing administrative policy, industrial collaborations, and strategic initiatives to establish the highest pedagogical standards.
+              {currentData.intro}
             </p>
           </div>
 
           <ScrollDownButton className="my-4" />
 
           {/* Quick statutory pillars */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">UGC</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Compliance Regulations</span>
+          {currentData.metrics && currentData.metrics.length > 0 && (
+            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
+              {currentData.metrics.map((metric, idx) => (
+                <div key={idx} className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+                  <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">{metric.value}</span>
+                  <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">{metric.label}</span>
+                </div>
+              ))}
             </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Trustees</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Industrial Management</span>
-            </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Affiliation</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">University Nomination</span>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -165,7 +235,7 @@ export default function GoverningCouncil() {
                     <td className="px-6 py-5 text-slate-500 font-bold">
                       {member.category}
                     </td>
-                    <td className="px-6 py-5 text-slate-550 sm:pr-8 font-medium">
+                    <td className="px-6 py-5 text-slate-555 sm:pr-8 font-medium">
                       {member.designation}
                     </td>
                   </tr>
@@ -176,6 +246,18 @@ export default function GoverningCouncil() {
 
         </div>
       </section>
+
+      {/* Extra Page Sections */}
+      {currentData.sections && currentData.sections.length > 0 && (
+        <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {currentData.sections.map((sec, idx) => (
+            <div key={idx} className="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
+              <h3 className="text-2xl font-extrabold text-slate-900 mb-4">{sec.title}</h3>
+              <p className="text-slate-650 text-sm sm:text-base leading-relaxed whitespace-pre-line">{sec.desc}</p>
+            </div>
+          ))}
+        </section>
+      )}
 
       <Footer />
     </div>

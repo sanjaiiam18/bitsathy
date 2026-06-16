@@ -1,11 +1,97 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default function PrincipalsDesk() {
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    const fetchUrl = `/api/content?path=/administration/principals-desk${isPreview ? "&preview=true" : ""}`;
+
+    fetch(fetchUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData({
+            title: data.page.title,
+            subtitle: data.page.subtitle,
+            intro: data.page.intro,
+            metrics: data.page.metrics || [],
+            sections: data.page.sections || [],
+          });
+        } else {
+          loadStaticFallback();
+        }
+      })
+      .catch(() => {
+        loadStaticFallback();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
+
+  const loadStaticFallback = () => {
+    setPageData({
+      title: "Principal's Message",
+      subtitle: "Academic Desk",
+      intro: "Insights on engineering excellence, academic rigor, and holistic learning developments from Dr. C. Palanisamy, Principal.",
+      metrics: [
+        { label: "Outcome-Based Learning", value: "Rigor" },
+        { label: "Intellectual Property", value: "Research" },
+        { label: "Corporate Integrations", value: "Synergy" }
+      ],
+      sections: [
+        {
+          title: "Empowering Minds, Designing Tomorrows",
+          desc: "India has the largest youth population globally, which presents an unprecedented demographic dividend. At Bannari Amman Institute of Technology, we see this as both an opportunity and a heavy responsibility. Our mission is to transform this potential into a powerful force for scientific progress, engineering innovation, and nation-building.\n\nThrough our unique autonomous curriculum, we ensure that learning is not a passive assimilation of text. Rather, it is an active exploration. In our 30+ specialized Centres of Excellence, Product Innovation Centre, and the Gurugulam system, students work on real-world industrial research, build functional models, and file patents. We emphasize design thinking, coding proficiency, and entrepreneurial skills, making our graduates day-one productive in global settings.\n\nBeyond the classroom, our 181-acre campus is designed to be a thriving biosphere where sports, cultural groups, and green clubs provide a rich community life. We are dedicated to ensuring that when a student graduates from BIT, they possess not just technical skills, but also the leadership qualities, empathy, and global ethics needed to build a bright tomorrow."
+        }
+      ]
+    });
+  };
+
+  const currentData = pageData || {
+    title: "Principal's Message",
+    subtitle: "Academic Desk",
+    intro: "Insights on engineering excellence, academic rigor, and holistic learning developments from Dr. C. Palanisamy, Principal.",
+    metrics: [
+      { label: "Outcome-Based Learning", value: "Rigor" },
+      { label: "Intellectual Property", value: "Research" },
+      { label: "Corporate Integrations", value: "Synergy" }
+    ],
+    sections: [
+      {
+        title: "Empowering Minds, Designing Tomorrows",
+        desc: "India has the largest youth population globally, which presents an unprecedented demographic dividend. At Bannari Amman Institute of Technology, we see this as both an opportunity and a heavy responsibility. Our mission is to transform this potential into a powerful force for scientific progress, engineering innovation, and nation-building.\n\nThrough our unique autonomous curriculum, we ensure that learning is not a passive assimilation of text. Rather, it is an active exploration. In our 30+ specialized Centres of Excellence, Product Innovation Centre, and the Gurugulam system, students work on real-world industrial research, build functional models, and file patents. We emphasize design thinking, coding proficiency, and entrepreneurial skills, making our graduates day-one productive in global settings.\n\nBeyond the classroom, our 181-acre campus is designed to be a thriving biosphere where sports, cultural groups, and green clubs provide a rich community life. We are dedicated to ensuring that when a student graduates from BIT, they possess not just technical skills, but also the leadership qualities, empathy, and global ethics needed to build a bright tomorrow."
+      }
+    ]
+  };
+
+  const mainSection = currentData.sections[0] || { title: "", desc: "" };
+
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-brand-orange selection:text-white relative overflow-hidden">
       <Navbar />
@@ -33,34 +119,30 @@ export default function PrincipalsDesk() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-                Academic Desk
+                {currentData.subtitle}
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              Principal's <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-blue">Message</span>
+              {currentData.title}
             </h1>
             <p className="text-slate-700 max-w-3xl text-base sm:text-lg leading-relaxed font-semibold">
-              Insights on engineering excellence, academic rigor, and holistic learning developments from Dr. C. Palanisamy, Principal.
+              {currentData.intro}
             </p>
           </div>
 
           <ScrollDownButton className="my-4" />
 
           {/* Quick academic pillars */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Rigor</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Outcome-Based Learning</span>
+          {currentData.metrics && currentData.metrics.length > 0 && (
+            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
+              {currentData.metrics.map((metric, idx) => (
+                <div key={idx} className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+                  <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">{metric.value}</span>
+                  <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">{metric.label}</span>
+                </div>
+              ))}
             </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Research</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Intellectual Property</span>
-            </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Synergy</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Corporate Integrations</span>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -116,31 +198,19 @@ export default function PrincipalsDesk() {
           <div className="lg:col-span-7 space-y-6 reveal-right">
             <div className="p-6 rounded-3xl bg-slate-100/60 border border-slate-200/80 mb-6">
               <span className="text-brand-orange text-4xl font-serif">“</span>
-              <p className="text-slate-650 italic font-semibold text-sm sm:text-base -mt-4 mb-4">
+              <p className="text-slate-655 italic font-semibold text-sm sm:text-base -mt-4 mb-4">
                 Learning gives creativity, creativity leads to thinking, thinking provides knowledge, and knowledge makes you great.
               </p>
               <p className="text-xs font-bold text-slate-500 uppercase tracking-widest text-right">— Dr. A.P.J. Abdul Kalam</p>
             </div>
 
             <h2 className="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">
-              Empowering Minds, <span className="text-brand-orange">Designing Tomorrows</span>
+              {mainSection.title}
             </h2>
             
-            <p className="text-slate-600 leading-relaxed font-semibold text-base sm:text-lg">
-              Dear Students, Parents, and Industry Partners,
-            </p>
-
-            <p className="text-slate-500 leading-relaxed font-medium text-sm sm:text-base">
-              India has the largest youth population globally, which presents an unprecedented demographic dividend. At Bannari Amman Institute of Technology, we see this as both an opportunity and a heavy responsibility. Our mission is to transform this potential into a powerful force for scientific progress, engineering innovation, and nation-building.
-            </p>
-
-            <p className="text-slate-500 leading-relaxed font-medium text-sm sm:text-base">
-              Through our unique autonomous curriculum, we ensure that learning is not a passive assimilation of text. Rather, it is an active exploration. In our 30+ specialized Centres of Excellence, Product Innovation Centre, and the Gurugulam system, students work on real-world industrial research, build functional models, and file patents. We emphasize design thinking, coding proficiency, and entrepreneurial skills, making our graduates day-one productive in global settings.
-            </p>
-
-            <p className="text-slate-500 leading-relaxed font-medium text-sm sm:text-base">
-              Beyond the classroom, our 181-acre campus is designed to be a thriving biosphere where sports, cultural groups, and green clubs provide a rich community life. We are dedicated to ensuring that when a student graduates from BIT, they possess not just technical skills, but also the leadership qualities, empathy, and global ethics needed to build a bright tomorrow.
-            </p>
+            <div className="text-slate-500 leading-relaxed font-medium text-sm sm:text-base whitespace-pre-line space-y-4">
+              {mainSection.desc}
+            </div>
 
             <div className="pt-6 border-t border-slate-200/80">
               <p className="text-slate-950 font-bold text-sm">Sincerely yours,</p>
@@ -151,6 +221,18 @@ export default function PrincipalsDesk() {
 
         </div>
       </section>
+
+      {/* Extra Page Sections */}
+      {currentData.sections.length > 1 && (
+        <section className="py-16 border-t border-slate-100 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {currentData.sections.slice(1).map((sec, idx) => (
+            <div key={idx} className="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm">
+              <h3 className="text-2xl font-extrabold text-slate-900 mb-4">{sec.title}</h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">{sec.desc}</p>
+            </div>
+          ))}
+        </section>
+      )}
 
       <Footer />
     </div>

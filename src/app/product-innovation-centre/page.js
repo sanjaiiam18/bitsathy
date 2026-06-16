@@ -1,13 +1,86 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
 import { siteContent } from "@/data/siteContent";
 
 export default function ProductInnovationCentrePage() {
-  const pageData = siteContent["product-innovation-centre"];
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    const fetchUrl = `/api/content?path=/product-innovation-centre${isPreview ? "&preview=true" : ""}`;
+
+    fetch(fetchUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData({
+            title: data.page.title,
+            subtitle: data.page.subtitle,
+            intro: data.page.intro,
+            metrics: data.page.metrics || [],
+            contentBlocks: (data.page.sections || []).map((sec) => ({
+              title: sec.title || "",
+              desc: sec.desc || "",
+              image: sec.image_url || sec.image || "",
+            })),
+          });
+        } else {
+          loadStaticFallback();
+        }
+      })
+      .catch(() => {
+        loadStaticFallback();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          contentBlocks: (newPageData.sections || []).map((sec) => ({
+            title: sec.title || "",
+            desc: sec.desc || "",
+            image: sec.image_url || sec.image || "",
+          })),
+        });
+      }
+    };
+
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
+
+  const loadStaticFallback = () => {
+    const raw = siteContent["product-innovation-centre"];
+    setPageData({
+      title: raw.title,
+      subtitle: raw.subtitle,
+      intro: raw.intro,
+      metrics: raw.metrics || [],
+      contentBlocks: raw.contentBlocks || [],
+    });
+  };
+
+  const currentData = pageData || {
+    title: siteContent["product-innovation-centre"].title,
+    subtitle: siteContent["product-innovation-centre"].subtitle,
+    intro: siteContent["product-innovation-centre"].intro,
+    metrics: siteContent["product-innovation-centre"].metrics || [],
+    contentBlocks: siteContent["product-innovation-centre"].contentBlocks || [],
+  };
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-brand-orange selection:text-white relative overflow-hidden">
@@ -39,22 +112,22 @@ export default function ProductInnovationCentrePage() {
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              {pageData.title}
+              {currentData.title}
             </h1>
             <p className="text-brand-orange font-extrabold text-xs sm:text-sm tracking-widest uppercase mb-4">
-              {pageData.subtitle}
+              {currentData.subtitle}
             </p>
             <p className="text-slate-700 max-w-3xl text-base sm:text-lg leading-relaxed font-semibold">
-              {pageData.intro}
+              {currentData.intro}
             </p>
           </div>
 
           <ScrollDownButton className="my-4" />
 
           {/* Quick indicator cards */}
-          {pageData.metrics && pageData.metrics.length > 0 && (
+          {currentData.metrics && currentData.metrics.length > 0 && (
             <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
-              {pageData.metrics.map((metric, idx) => (
+              {currentData.metrics.map((metric, idx) => (
                 <div key={idx} className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
                   <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">{metric.value}</span>
                   <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">{metric.label}</span>
@@ -71,7 +144,7 @@ export default function ProductInnovationCentrePage() {
           
           {/* Left Side: Blocks */}
           <div className="lg:col-span-8 space-y-12 reveal-left">
-            {pageData.contentBlocks.map((block, idx) => (
+            {currentData.contentBlocks.map((block, idx) => (
               <div
                 key={idx}
                 className="p-8 rounded-3xl bg-white border border-slate-200/85 shadow-sm hover:shadow-md transition-shadow"
@@ -103,7 +176,7 @@ export default function ProductInnovationCentrePage() {
           <div className="lg:col-span-4 sticky top-28 bg-gradient-to-tr from-brand-blue/5 to-slate-100 p-8 sm:p-10 rounded-3xl border border-slate-200 reveal-right">
             <h3 className="font-extrabold text-slate-900 text-xl mb-6 tracking-tight">PIC Statistics</h3>
             <div className="space-y-8">
-              {pageData.metrics.map((metric, idx) => (
+              {currentData.metrics.map((metric, idx) => (
                 <div key={idx} className="border-b border-slate-200/70 pb-6 last:border-b-0 last:pb-0">
                   <span className="text-3xl sm:text-4xl font-extrabold text-brand-blue block mb-1">
                     {metric.value}

@@ -51,7 +51,7 @@ export default function GymnasiumPage() {
   const [activeTimingTab, setActiveTimingTab] = useState("boys");
 
   // Gym Zones Data
-  const zones = [
+  let zones = [
     {
       title: "Cardio Arena",
       desc: "Equipped with state-of-the-art motor-driven treadmills, cross-trainers, stationary rowing cycles, and step mills. Perfect for developing cardiovascular capacity and stamina.",
@@ -81,6 +81,32 @@ export default function GymnasiumPage() {
       accent: "text-emerald-600"
     }
   ];
+
+  if (pageData && pageData.sections && pageData.sections.length > 0) {
+    zones = zones.map((z, idx) => {
+      const sec = pageData.sections[idx];
+      if (sec) {
+        return {
+          ...z,
+          title: sec.title || z.title,
+          desc: sec.desc || z.desc,
+        };
+      }
+      return z;
+    });
+
+    if (pageData.sections.length > zones.length) {
+      pageData.sections.slice(zones.length).forEach((sec) => {
+        zones.push({
+          title: sec.title,
+          desc: sec.desc,
+          equipment: [],
+          color: "from-brand-blue to-indigo-500",
+          accent: "text-brand-blue"
+        });
+      });
+    }
+  }
 
   // BMI calculation logic
   const calculateBMI = (e) => {
@@ -530,6 +556,108 @@ export default function GymnasiumPage() {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Page Sections */}
+      {pageData && pageData.sections && pageData.sections.length > zones.length && (
+        <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+          {pageData.sections.slice(zones.length).map((block, idx) => {
+            const isImgLeft = block.layout_type === "image-left";
+            const isImgRight = block.layout_type === "image-right" || block.image_url || block.image;
+            const isFullWidth = block.layout_type === "full-width";
+            const isTextCenter = block.alignment === "center";
+            const isTextRight = block.alignment === "right";
+
+            return (
+              <div
+                key={idx}
+                className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow"
+              >
+                {isFullWidth ? (
+                  <div className="space-y-6">
+                    <div className={`space-y-3.5 ${isTextCenter ? "text-center" : isTextRight ? "text-right" : "text-left"}`}>
+                      {block.subtitle && (
+                        <span className="text-xs font-bold tracking-wider text-brand-blue uppercase">
+                          {block.subtitle}
+                        </span>
+                      )}
+                      <h3 
+                        className={`text-2xl sm:text-3xl font-extrabold tracking-tight w-full ${
+                          block.title_align === "center" ? "text-center" : block.title_align === "right" ? "text-right" : "text-left"
+                        }`}
+                        style={{ color: block.title_color || "inherit" }}
+                      >
+                        {block.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
+                        {block.desc}
+                      </p>
+                      {block.btn_text && (
+                        <a
+                          href={block.btn_url || "#"}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          {block.btn_text} ➔
+                        </a>
+                      )}
+                    </div>
+                    {(block.image_url || block.image) && (
+                      <div className="relative overflow-hidden rounded-2xl aspect-video border border-slate-200 bg-slate-50 shadow-inner">
+                        <img
+                          src={block.image_url || block.image}
+                          alt={block.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div
+                      className={`space-y-4.5 ${
+                        isImgLeft || isImgRight ? "md:col-span-7" : "md:col-span-12"
+                      } ${isImgLeft ? "md:order-2" : ""} ${isTextCenter ? "text-center" : isTextRight ? "text-right" : "text-left"}`}
+                    >
+                      {block.subtitle && (
+                        <span className="text-xs font-bold tracking-wider text-brand-blue uppercase">
+                          {block.subtitle}
+                        </span>
+                      )}
+                      <h3 
+                        className={`text-2xl sm:text-3xl font-extrabold tracking-tight w-full ${
+                          block.title_align === "center" ? "text-center" : block.title_align === "right" ? "text-right" : "text-left"
+                        }`}
+                        style={{ color: block.title_color || "inherit" }}
+                      >
+                        {block.title}
+                      </h3>
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium">
+                        {block.desc}
+                      </p>
+                      {block.btn_text && (
+                        <a
+                          href={block.btn_url || "#"}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange text-white font-black text-xs uppercase tracking-wider transition-all duration-200 hover:-translate-y-0.5"
+                        >
+                          {block.btn_text} ➔
+                        </a>
+                      )}
+                    </div>
+                    {(isImgLeft || isImgRight) && (block.image_url || block.image) && (
+                      <div className="md:col-span-5 relative overflow-hidden rounded-2xl aspect-video border border-slate-200 bg-slate-50 shadow-inner">
+                        <img
+                          src={block.image_url || block.image}
+                          alt={block.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </section>
+      )}
 
       <Footer />
     </div>

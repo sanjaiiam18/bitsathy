@@ -1,17 +1,118 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollDownButton from "@/components/ScrollDownButton";
 
 export default function DeanAdministration() {
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    const fetchUrl = `/api/content?path=/administration/dean-administration${isPreview ? "&preview=true" : ""}`;
+
+    fetch(fetchUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.page) {
+          setPageData({
+            title: data.page.title,
+            subtitle: data.page.subtitle,
+            intro: data.page.intro,
+            metrics: data.page.metrics || [],
+            sections: data.page.sections || [],
+          });
+        } else {
+          loadStaticFallback();
+        }
+      })
+      .catch(() => {
+        loadStaticFallback();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    const handlePreviewUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { pageData: newPageData } = e.detail;
+      if (newPageData) {
+        setPageData({
+          title: newPageData.title,
+          subtitle: newPageData.subtitle,
+          intro: newPageData.intro,
+          metrics: newPageData.metrics || [],
+          sections: newPageData.sections || [],
+        });
+      }
+    };
+
+    window.addEventListener("bit_preview_update", handlePreviewUpdate);
+    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+  }, []);
+
+  const loadStaticFallback = () => {
+    setPageData({
+      title: "Dean — Administration",
+      subtitle: "Executive Desk",
+      intro: "Administrative coordination, strategic planning, resource allocations, and quality improvement initiatives led by Dr. K. Sivakumar.",
+      metrics: [
+        { label: "Seamless Coordination", value: "Operations" },
+        { label: "Accreditation Standards", value: "Quality" },
+        { label: "Student Support Systems", value: "Amenities" }
+      ],
+      sections: [
+        { title: "Governance Coordination", desc: "Coordinating statutory bodies such as the Governing Council, Finance Committee, and administrative regulatory bodies." },
+        { title: "Quality Assurance (IQAC)", desc: "Enforcing systems to maintain academic quality standards, leading ISO, NAAC, and NBA accreditation cycles." },
+        { title: "Student Welfare & PDS", desc: "Overseeing student affairs, campus safety, hostels, medical facilities, and the Student Affairs council." },
+        { title: "Infrastructure & Incubation", desc: "Steering campus development initiatives, green energy grids, and backing startups through the Technology Business Incubator (BIT-TBI)." }
+      ]
+    });
+  };
+
+  const currentData = pageData || {
+    title: "Dean — Administration",
+    subtitle: "Executive Desk",
+    intro: "Administrative coordination, strategic planning, resource allocations, and quality improvement initiatives led by Dr. K. Sivakumar.",
+    metrics: [
+      { label: "Seamless Coordination", value: "Operations" },
+      { label: "Accreditation Standards", value: "Quality" },
+      { label: "Student Support Systems", value: "Amenities" }
+    ],
+    sections: [
+      { title: "Governance Coordination", desc: "Coordinating statutory bodies such as the Governing Council, Finance Committee, and administrative regulatory bodies." },
+      { title: "Quality Assurance (IQAC)", desc: "Enforcing systems to maintain academic quality standards, leading ISO, NAAC, and NBA accreditation cycles." },
+      { title: "Student Welfare & PDS", desc: "Overseeing student affairs, campus safety, hostels, medical facilities, and the Student Affairs council." },
+      { title: "Infrastructure & Incubation", desc: "Steering campus development initiatives, green energy grids, and backing startups through the Technology Business Incubator (BIT-TBI)." }
+    ]
+  };
+
   const responsibilities = [
     { title: "Governance Coordination", desc: "Coordinating statutory bodies such as the Governing Council, Finance Committee, and administrative regulatory bodies." },
     { title: "Quality Assurance (IQAC)", desc: "Enforcing systems to maintain academic quality standards, leading ISO, NAAC, and NBA accreditation cycles." },
     { title: "Student Welfare & PDS", desc: "Overseeing student affairs, campus safety, hostels, medical facilities, and the Student Affairs council." },
     { title: "Infrastructure & Incubation", desc: "Steering campus development initiatives, green energy grids, and backing startups through the Technology Business Incubator (BIT-TBI)." }
   ];
+
+  const activeResponsibilities = [...responsibilities];
+  if (currentData.sections && currentData.sections.length > 0) {
+    currentData.sections.forEach((sec, idx) => {
+      if (activeResponsibilities[idx]) {
+        activeResponsibilities[idx] = {
+          title: sec.title || activeResponsibilities[idx].title,
+          desc: sec.desc || activeResponsibilities[idx].desc
+        };
+      } else {
+        activeResponsibilities.push({
+          title: sec.title,
+          desc: sec.desc
+        });
+      }
+    });
+  }
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-brand-orange selection:text-white relative overflow-hidden">
@@ -40,34 +141,30 @@ export default function DeanAdministration() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-blue/5 border border-brand-blue/10 mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="text-xs font-bold tracking-widest text-brand-blue uppercase">
-                Executive Desk
+                {currentData.subtitle}
               </span>
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-              Dean — <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-blue">Administration</span>
+              {currentData.title}
             </h1>
             <p className="text-slate-700 max-w-3xl text-base sm:text-lg leading-relaxed font-semibold">
-              Administrative coordination, strategic planning, resource allocations, and quality improvement initiatives led by Dr. K. Sivakumar.
+              {currentData.intro}
             </p>
           </div>
 
           <ScrollDownButton className="my-4" />
 
           {/* Quick vision pillars */}
-          <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Operations</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Seamless Coordination</span>
+          {currentData.metrics && currentData.metrics.length > 0 && (
+            <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mt-6">
+              {currentData.metrics.map((metric, idx) => (
+                <div key={idx} className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
+                  <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">{metric.value}</span>
+                  <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">{metric.label}</span>
+                </div>
+              ))}
             </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Quality</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Accreditation Standards</span>
-            </div>
-            <div className="px-6 py-5 rounded-2xl bg-white/75 backdrop-blur-md border border-slate-200/50 shadow-sm flex flex-col items-center justify-center transition-all hover:scale-[1.02] hover:bg-white">
-              <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-purple">Amenities</span>
-              <span className="text-xs font-bold text-slate-655 tracking-wider uppercase mt-1.5">Student Support Systems</span>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -100,13 +197,13 @@ export default function DeanAdministration() {
               <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
                 Academic Operations &amp; <span className="text-brand-purple">Strategic Development</span>
               </h2>
-              <p className="text-slate-500 leading-relaxed font-semibold text-sm sm:text-base mt-4">
+              <p className="text-slate-550 leading-relaxed font-semibold text-sm sm:text-base mt-4">
                 The Office of Dean - Administration coordinates the policy implementations of the Governing Council and oversees daily campus management, strategic expansion, and student welfare initiatives.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {responsibilities.map((res, idx) => (
+              {activeResponsibilities.map((res, idx) => (
                 <div key={idx} className={`p-6 rounded-3xl bg-white border border-slate-200 shadow-sm reveal-scale ${idx % 2 === 0 ? "delay-75" : "delay-150"}`}>
                   <h3 className="font-extrabold text-slate-800 text-base mb-2">{res.title}</h3>
                   <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-semibold">{res.desc}</p>
@@ -114,7 +211,7 @@ export default function DeanAdministration() {
               ))}
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-100 border border-slate-200">
+            <div className="p-6 rounded-3xl bg-slate-100/60 border border-slate-200">
               <h4 className="font-extrabold text-slate-900 text-sm sm:text-base mb-2">Research and Academic Engagement</h4>
               <p className="text-slate-550 text-xs sm:text-sm font-semibold leading-relaxed">
                 In addition to administrative duties, Dr. K. Sivakumar drives scholarly development. He regularly serves on organizing and advisory boards for national and international engineering conferences and faculty training programs hosted at the institute, fostering a vibrant research ecosystem.

@@ -367,10 +367,102 @@ const glimpsesData = {
   ]
 };
 
+const getGlimpseIcon = (iconName, colorClass = "text-brand-blue") => {
+  if (React.isValidElement(iconName)) return iconName;
+  switch (iconName) {
+    case "eye":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      );
+    case "calendar":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      );
+    case "award":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+      );
+    case "file":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      );
+    case "users":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      );
+    case "user":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      );
+    case "book":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      );
+    case "building":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      );
+    case "star":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.25.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.772-.56-.372-1.81.588-1.81h4.907a1 1 0 00.95-.69l1.519-4.674z" />
+        </svg>
+      );
+    case "handshake":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857" />
+          <rect x="3" y="10" width="18" height="6" rx="2" strokeWidth={2} />
+        </svg>
+      );
+    case "sports":
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" strokeWidth={2} />
+          <path strokeLinecap="round" strokeWidth={2} d="M8 12h8m-4-4v8" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className={`w-5 h-5 ${colorClass}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      );
+  }
+};
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("All");
   const [activeGlimpseTab, setActiveGlimpseTab] = useState("About & Administration");
   const [pageData, setPageData] = useState(null);
+  const [currentGlimpses, setCurrentGlimpses] = useState(null);
+
+  const activeGlimpses = currentGlimpses || glimpsesData;
+
+  useEffect(() => {
+    const keys = Object.keys(activeGlimpses);
+    if (keys.length > 0 && !keys.includes(activeGlimpseTab)) {
+      setActiveGlimpseTab(keys[0]);
+    }
+  }, [currentGlimpses]);
 
   useEffect(() => {
     const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
@@ -382,6 +474,23 @@ export default function Home() {
         }
       })
       .catch((err) => console.error("Error loading home page content from DB:", err));
+
+    // Fetch site glimpses settings
+    fetch(isPreview ? "/api/settings?preview=true" : "/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.settings && data.settings.site_glimpses) {
+          try {
+            const parsed = typeof data.settings.site_glimpses === "string"
+              ? JSON.parse(data.settings.site_glimpses)
+              : data.settings.site_glimpses;
+            setCurrentGlimpses(parsed);
+          } catch (err) {
+            console.error("Failed to parse site_glimpses settings:", err);
+          }
+        }
+      })
+      .catch((err) => console.error("Error loading settings glimpses:", err));
 
     // Listen to real-time editor preview updates
     const handlePreviewUpdate = (e) => {
@@ -398,8 +507,29 @@ export default function Home() {
         });
       }
     };
+
+    const handleSettingsUpdate = (e) => {
+      const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+      if (!isPreview) return;
+      const { settings: newSettings } = e.detail;
+      if (newSettings && newSettings.site_glimpses) {
+        try {
+          const parsed = typeof newSettings.site_glimpses === "string"
+            ? JSON.parse(newSettings.site_glimpses)
+            : newSettings.site_glimpses;
+          setCurrentGlimpses(parsed);
+        } catch (err) {
+          console.error("Failed to update site_glimpses from preview event:", err);
+        }
+      }
+    };
+
     window.addEventListener("bit_preview_update", handlePreviewUpdate);
-    return () => window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+    window.addEventListener("bit_settings_update", handleSettingsUpdate);
+    return () => {
+      window.removeEventListener("bit_preview_update", handlePreviewUpdate);
+      window.removeEventListener("bit_settings_update", handleSettingsUpdate);
+    };
   }, []);
 
   // Numeric stats counter effect
@@ -692,7 +822,12 @@ export default function Home() {
                           {block.subtitle}
                         </span>
                       )}
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                      <h3 
+                        className={`text-2xl sm:text-3xl font-extrabold tracking-tight w-full ${
+                          block.title_align === "center" ? "text-center" : block.title_align === "right" ? "text-right" : "text-left"
+                        }`}
+                        style={{ color: block.title_color || "inherit" }}
+                      >
                         {block.title}
                       </h3>
                       <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
@@ -729,7 +864,12 @@ export default function Home() {
                           {block.subtitle}
                         </span>
                       )}
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                      <h3 
+                        className={`text-2xl sm:text-3xl font-extrabold tracking-tight w-full ${
+                          block.title_align === "center" ? "text-center" : block.title_align === "right" ? "text-right" : "text-left"
+                        }`}
+                        style={{ color: block.title_color || "inherit" }}
+                      >
                         {block.title}
                       </h3>
                       <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
@@ -987,7 +1127,7 @@ export default function Home() {
 
           {/* Directory tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
-            {Object.keys(glimpsesData).map((tab) => (
+            {Object.keys(activeGlimpses).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveGlimpseTab(tab)}
@@ -1004,7 +1144,7 @@ export default function Home() {
 
           {/* Grid of Glimpse Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {glimpsesData[activeGlimpseTab].map((glimpse, idx) => (
+            {(activeGlimpses[activeGlimpseTab] || []).map((glimpse, idx) => (
               <div
                 key={idx}
                 className={`group relative bg-white rounded-3xl border border-slate-200/80 p-8 shadow-sm transition-all duration-305 hover:shadow-xl hover:border-slate-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden reveal-scale ${idx % 3 === 0 ? "delay-75" : idx % 3 === 1 ? "delay-150" : "delay-200"}`}
@@ -1016,8 +1156,8 @@ export default function Home() {
 
                 <div>
                   <div className="flex justify-between items-center mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-slate-100 text-slate-700">
-                      {glimpse.icon}
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-slate-100 text-slate-750">
+                      {getGlimpseIcon(glimpse.icon, idx % 3 === 0 ? "text-brand-blue" : idx % 3 === 1 ? "text-brand-purple" : "text-brand-orange")}
                     </div>
                     <span className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 group-hover:text-slate-500">
                       Preview

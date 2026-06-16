@@ -73,7 +73,7 @@ export async function seedDatabase(reset = false) {
   await query(`
     CREATE TABLE IF NOT EXISTS \`departments\` (
       \`id\` INT AUTO_INCREMENT PRIMARY KEY,
-      \`slug\` VARCHAR(150) UNIQUE NOT NULL,
+      \`slug\` VARCHAR(150) UNIQUE NOT NULL,k
       \`name\` VARCHAR(255) NOT NULL,
       \`code\` VARCHAR(50) NOT NULL,
       \`category\` VARCHAR(150),
@@ -314,6 +314,84 @@ export async function seedDatabase(reset = false) {
     contentBlocks: [
       { title: "Campus Location", desc: "Bannari Amman Institute of Technology, Alathukombai Post, Sathyamangalam - 638401, Erode District, Tamil Nadu, India." },
       { title: "Admissions Office Details", desc: "Phone: +91 89401 26000 | Email: admissions@bitsathy.ac.in" }
+    ]
+  });
+
+  // 5. Administration Home Page
+  await seedPage("/administration", {
+    title: "Institutional Leadership Desk",
+    subtitle: "Governing Administration",
+    intro: "Our governing bodies, administrators, and academic deans work closely to ensure transparent, progressive regulations that place student progress at the center of all actions.",
+    metrics: [
+      { label: "Strategic Board", value: "Council" },
+      { label: "Academic Regulations", value: "Autonomous" },
+      { label: "Executive Offices", value: "4 Desks" }
+    ],
+    contentBlocks: [
+      { title: "Chairman's Desk", desc: "Read the inspiring vision and educational philosophy from our Chairman, Thiru S. V. Balasubramaniam." },
+      { title: "Principal's Desk", desc: "A welcome message from our Principal, Dr. C. Palanisamy, detailing academic excellence and holistic growth." },
+      { title: "Governing Council", desc: "Meet the statutory body members driving policy formulation and university governance under AICTE guidelines." },
+      { title: "Dean - Administration", desc: "Information regarding the Office of Dean - Administration led by Dr. K. Sivakumar, covering development and student affairs." }
+    ]
+  });
+
+  // 6. Chairman's Message Desk
+  await seedPage("/administration/chairmans-desk", {
+    title: "Chairman's Message",
+    subtitle: "Leadership Desk",
+    intro: "An inspiring vision from Thiru S. V. Balasubramaniam, Chairman of the Bannari Amman Group, promoting educational quality and lifelong learning.",
+    metrics: [
+      { label: "Industrial Capabilities", value: "Empower" },
+      { label: "Value-Based Living", value: "Virtues" },
+      { label: "Global Readiness", value: "Future" }
+    ],
+    contentBlocks: [
+      { title: "A Philosophy for Life-Centered Education", desc: "Welcome to the Bannari Amman Institute of Technology. At BIT, we hold a fundamental belief that education must go beyond simply enabling graduates to earn a livelihood. While academic credentials and domain expertise are necessary milestones, our true purpose is to nurture individuals with character, values, and emotional capacity." }
+    ]
+  });
+
+  // 7. Principal's Message Desk
+  await seedPage("/administration/principals-desk", {
+    title: "Principal's Message",
+    subtitle: "Academic Desk",
+    intro: "Insights on engineering excellence, academic rigor, and holistic learning developments from Dr. C. Palanisamy, Principal.",
+    metrics: [
+      { label: "Outcome-Based Learning", value: "Rigor" },
+      { label: "Intellectual Property", value: "Research" },
+      { label: "Corporate Integrations", value: "Synergy" }
+    ],
+    contentBlocks: [
+      { title: "Empowering Minds, Designing Tomorrows", desc: "Through our unique autonomous curriculum, we ensure that learning is not a passive assimilation of text. Rather, it is an active exploration. In our 30+ specialized Centres of Excellence, Product Innovation Centre, and the Gurugulam system, students work on real-world industrial research, build functional models, and file patents." }
+    ]
+  });
+
+  // 8. Dean - Administration Desk
+  await seedPage("/administration/dean-administration", {
+    title: "Dean — Administration",
+    subtitle: "Executive Desk",
+    intro: "Administrative coordination, strategic planning, resource allocations, and quality improvement initiatives led by Dr. K. Sivakumar.",
+    metrics: [
+      { label: "Seamless Coordination", value: "Operations" },
+      { label: "Accreditation Standards", value: "Quality" },
+      { label: "Student Support Systems", value: "Amenities" }
+    ],
+    contentBlocks: [
+      { title: "Academic Operations & Strategic Development", desc: "The Office of Dean - Administration coordinates the policy implementations of the Governing Council and oversees daily campus management, strategic expansion, and student welfare initiatives." }
+    ]
+  });
+
+  // 9. Governing Council Desk
+  await seedPage("/administration/governing-council", {
+    title: "Governing Council",
+    subtitle: "Statutory Board",
+    intro: "The Governing Council is the apex statutory body overseeing administrative policy, industrial collaborations, and strategic initiatives to establish the highest pedagogical standards.",
+    metrics: [
+      { label: "Compliance Regulations", value: "UGC" },
+      { label: "Industrial Management", value: "Trustees" },
+      { label: "University Nomination", value: "Affiliation" }
+    ],
+    contentBlocks: [
+      { title: "Council Members Board", desc: "Constituted in accordance with the guidelines prescribed by UGC and AICTE, driving policy formulation and university governance under statutory requirements." }
     ]
   });
 

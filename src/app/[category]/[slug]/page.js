@@ -40,6 +40,8 @@ export default function DynamicSubpage({ params }) {
               section_order: sec.section_order,
               alignment: sec.alignment || "left",
               layout_type: sec.layout_type || "standard",
+              titleAlign: sec.title_align || sec.titleAlign || "left",
+              titleColor: sec.title_color || sec.titleColor || "",
             })),
           });
         } else {
@@ -76,6 +78,8 @@ export default function DynamicSubpage({ params }) {
             section_order: sec.section_order,
             alignment: sec.alignment || "left",
             layout_type: sec.layout_type || "standard",
+            titleAlign: sec.title_align || sec.titleAlign || "left",
+            titleColor: sec.title_color || sec.titleColor || "",
           })),
         });
       }
@@ -202,7 +206,12 @@ export default function DynamicSubpage({ params }) {
                             {block.subtitle}
                           </span>
                         )}
-                        <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        <h3 
+                          className={`text-xl sm:text-2xl font-extrabold tracking-tight w-full ${
+                            block.titleAlign === "center" ? "text-center" : block.titleAlign === "right" ? "text-right" : "text-left"
+                          }`}
+                          style={{ color: block.titleColor || "inherit" }}
+                        >
                           {block.title}
                         </h3>
                         <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">
@@ -239,7 +248,12 @@ export default function DynamicSubpage({ params }) {
                             {block.subtitle}
                           </span>
                         )}
-                        <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        <h3 
+                          className={`text-xl sm:text-2xl font-extrabold tracking-tight w-full ${
+                            block.titleAlign === "center" ? "text-center" : block.titleAlign === "right" ? "text-right" : "text-left"
+                          }`}
+                          style={{ color: block.titleColor || "inherit" }}
+                        >
                           {block.title}
                         </h3>
                         <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium mb-4">

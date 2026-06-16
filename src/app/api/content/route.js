@@ -25,6 +25,12 @@ export async function GET(req) {
       return NextResponse.json({ success: true, departments: depts });
     }
 
+    // Fetch list of all pages
+    if (type === "pages") {
+      const allPages = await query("SELECT path, title FROM `pages` ORDER BY path ASC");
+      return NextResponse.json({ success: true, pages: allPages });
+    }
+
     // 3. Fetch standard page by path
     if (path) {
       const isPreview = searchParams.get("preview") === "true";
@@ -80,6 +86,8 @@ export async function GET(req) {
                 section_order: sec.section_order,
                 alignment: sec.alignment || "left",
                 layout_type: sec.layout_type || "standard",
+                title_align: sec.title_align || "left",
+                title_color: sec.title_color || "",
               })),
             };
 
@@ -268,7 +276,8 @@ export async function POST(req) {
           await query(
             `UPDATE \`page_sections\` SET
               \`title\` = ?, \`subtitle\` = ?, \`desc\` = ?, \`image_url\` = ?, \`video_url\` = ?,
-              \`btn_text\` = ?, \`btn_url\` = ?, \`section_order\` = ?, \`alignment\` = ?, \`layout_type\` = ?
+              \`btn_text\` = ?, \`btn_url\` = ?, \`section_order\` = ?, \`alignment\` = ?, \`layout_type\` = ?,
+              \`title_align\` = ?, \`title_color\` = ?
             WHERE \`id\` = ?`,
             [
               sect.title || "",
@@ -281,6 +290,8 @@ export async function POST(req) {
               i, // use current index as section order
               sect.alignment || "left",
               sect.layout_type || "standard",
+              sect.title_align || "left",
+              sect.title_color || "",
               sectId,
             ]
           );
@@ -290,8 +301,9 @@ export async function POST(req) {
           const insertResult = await query(
             `INSERT INTO \`page_sections\` (
               \`page_id\`, \`title\`, \`subtitle\`, \`desc\`, \`image_url\`, \`video_url\`,
-              \`btn_text\`, \`btn_url\`, \`section_order\`, \`alignment\`, \`layout_type\`
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              \`btn_text\`, \`btn_url\`, \`section_order\`, \`alignment\`, \`layout_type\`,
+              \`title_align\`, \`title_color\`
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               pageId,
               sect.title || "",
@@ -304,6 +316,8 @@ export async function POST(req) {
               i, // use current index
               sect.alignment || "left",
               sect.layout_type || "standard",
+              sect.title_align || "left",
+              sect.title_color || "",
             ]
           );
           keepIds.push(insertResult.insertId);

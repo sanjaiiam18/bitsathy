@@ -119,6 +119,32 @@ export default function AdminDashboard() {
     }
   ];
 
+  const defaultGlimpses = {
+    "About & Administration": [
+      { title: "Vision & Mission", desc: "Our core principles, vision for the future of technical education, and core institutional values.", href: "/about/vision-mission", icon: "eye" },
+      { title: "Milestones", desc: "Take a trip through the history of BIT Sathy and the key achievements we have completed since 1996.", href: "/about/milestones", icon: "calendar" },
+      { title: "Achievements", desc: "Outstanding recognition, awards, ranking metrics, and championship trophies won by the college.", href: "/about/achievements", icon: "award" },
+      { title: "Approvals & Circulars", desc: "View official regulatory letters, UGC autonomy mandates, Anna University affiliations, and circular notifications.", href: "/about/approvals-circulars", icon: "file" },
+      { title: "Governing Council", desc: "Meet the governing board directing policy implementations, compliance, and budget planning.", href: "/administration/governing-council", icon: "users" },
+      { title: "Chairman's Desk", desc: "Welcome letter and pedagogical direction from our Chairman, Thiru S. V. Balasubramaniam.", href: "/administration/chairmans-desk", icon: "user" },
+      { title: "Principal's Desk", desc: "Academic welcome and student excellence message from our Principal, Dr. C. Palanisamy.", href: "/administration/principals-desk", icon: "book" },
+      { title: "Dean - Administration", desc: "General campus coordination, accreditation standards, and student life guidelines led by Dr. K. Sivakumar.", href: "/administration/dean-administration", icon: "building" }
+    ],
+    "Academic & Support": [
+      { title: "Programmes Offered", desc: "Full catalog of undergraduate B.E. & B.Tech courses with corporate partnerships.", href: "/academics/programmes-offered", icon: "book" },
+      { title: "Office of the CoE", desc: "Examination guidelines, regulations, grading scales, assessment notifications, and results corner.", href: "/academics/coecorner", icon: "award" },
+      { title: "Academic Regulations", desc: "Understand grading schemes, credit definitions, elective registration systems, and student conduct rules.", href: "/academics/regulations", icon: "file" },
+      { title: "Academic Calendar", desc: "Track semester sessions, internal review schedules, holidays, and college events.", href: "/academics/academic-calendar", icon: "calendar" },
+      { title: "Learning Centre", desc: "Library resources, featuring 100k+ print titles, digital journal networks, and quiet study sections.", href: "/academics/learning-centre", icon: "book" },
+      { title: "English Cell (ELCC)", desc: "Language lab, soft skills training, public speaking seminars, and placement writing prep.", href: "/academics/elcc", icon: "users" },
+      { title: "Capability Schemes", desc: "Advanced student grooming, professional certifications, and capability coaching programs.", href: "/academics/capability-enhancement-schemes", icon: "star" }
+    ],
+    "Research & Development": [
+      { title: "Advisory Board", desc: "The international academic and executive team setting the direction for our research labs.", href: "/research/advisory-board", icon: "users" },
+      { title: "Academic Research", desc: "Information for Ph.D. scholars, recognized guides, and Anna University doctoral guidelines.", href: "/research/academic", icon: "book" }
+    ]
+  };
+
   // Settings states
   const [settings, setSettings] = useState({
     brand_blue: "#1e3a8a",
@@ -129,32 +155,100 @@ export default function AdminDashboard() {
     site_logo: "/logo.png",
     site_footer_text: "© 2026 Bannari Amman Institute of Technology. All Rights Reserved.",
     site_navigation: JSON.stringify(defaultNav),
+    site_glimpses: JSON.stringify(defaultGlimpses),
   });
   const [savingSettings, setSavingSettings] = useState(false);
 
   // Pages States
+  const [dbPages, setDbPages] = useState([]);
   const [pagePaths, setPagePaths] = useState([
     { path: "/", label: "Home Page" },
     { path: "/placements", label: "Placements" },
     { path: "/campus-life/gymnasium", label: "Gymnasium Hub" },
     { path: "/contact", label: "Contact Us" },
-    // About Category
-    { path: "/about/vision-mission", label: "About: Vision & Mission" },
-    { path: "/about/milestones", label: "About: Milestones" },
-    { path: "/about/achievements", label: "About: Achievements" },
-    { path: "/about/approvals-circulars", label: "About: Approvals & Circulars" },
-    // Academics Category
-    { path: "/academics/curriculum", label: "Academics: Curriculum" },
-    { path: "/academics/academic-calendar", label: "Academics: Academic Calendar" },
-    // Campus Life Category
-    { path: "/campus-life/facilities", label: "Campus Life: Facilities" },
-    { path: "/campus-life/student-activities", label: "Campus Life: Student Activities" },
-    { path: "/campus-life/hostel-amenities", label: "Campus Life: Hostel Amenities" },
-    // Research Category
-    { path: "/research/centres-of-excellence", label: "Research: Centres of Excellence" },
-    { path: "/research/consultancy-services", label: "Research: Consultancy Services" },
-    { path: "/research/funded-projects", label: "Research: Funded Projects" },
+    { path: "/gurugulam", label: "Flagship: Gurugulam" },
+    { path: "/product-innovation-centre", label: "Flagship: Product Innovation Centre" },
+    { path: "/administration", label: "Administration: Main" }
   ]);
+
+  useEffect(() => {
+    const corePaths = [
+      { path: "/", label: "Home Page" },
+      { path: "/placements", label: "Placements" },
+      { path: "/campus-life/gymnasium", label: "Gymnasium Hub" },
+      { path: "/contact", label: "Contact Us" },
+      { path: "/gurugulam", label: "Flagship: Gurugulam" },
+      { path: "/product-innovation-centre", label: "Flagship: Product Innovation Centre" },
+      { path: "/administration", label: "Administration: Main" }
+    ];
+
+    const merged = [...corePaths];
+
+    if (settings.site_navigation) {
+      try {
+        const nav = typeof settings.site_navigation === "string"
+          ? JSON.parse(settings.site_navigation)
+          : settings.site_navigation;
+        if (Array.isArray(nav)) {
+          nav.forEach((item) => {
+            if (item.href && item.href.startsWith("/") && item.href !== "#") {
+              const label = item.name || item.href;
+              if (!merged.some((m) => m.path === item.href)) {
+                merged.push({ path: item.href, label });
+              }
+            }
+            if (item.submenu && Array.isArray(item.submenu)) {
+              item.submenu.forEach((sub) => {
+                if (sub.href && sub.href.startsWith("/") && sub.href !== "#") {
+                  const categoryName = item.name || "";
+                  const label = categoryName ? `${categoryName}: ${sub.name}` : sub.name;
+                  if (!merged.some((m) => m.path === sub.href)) {
+                    merged.push({ path: sub.href, label });
+                  }
+                }
+              });
+            }
+          });
+        }
+      } catch (e) {
+        console.error("Error parsing site navigation for page paths:", e);
+      }
+    }
+
+    if (dbPages && Array.isArray(dbPages)) {
+      dbPages.forEach((p) => {
+        let label = p.title || p.path;
+        if (p.path === "/") label = "Home Page";
+        else if (p.path === "/placements") label = "Placements";
+        else if (p.path === "/campus-life/gymnasium") label = "Gymnasium Hub";
+        else if (p.path === "/contact") label = "Contact Us";
+        else if (p.path === "/gurugulam") label = "Flagship: Gurugulam";
+        else if (p.path === "/product-innovation-centre") label = "Flagship: Product Innovation Centre";
+        else {
+          const parts = p.path.split("/").filter(Boolean);
+          if (parts.length >= 2) {
+            const category = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+            const name = p.title || (parts[1].charAt(0).toUpperCase() + parts[1].slice(1).replace(/-/g, " "));
+            label = `${category}: ${name}`;
+          } else if (parts.length === 1) {
+            label = p.title || (parts[0].charAt(0).toUpperCase() + parts[0].slice(1));
+          }
+        }
+
+        const idx = merged.findIndex((m) => m.path === p.path);
+        if (idx === -1) {
+          merged.push({ path: p.path, label });
+        } else {
+          if (p.title) {
+            merged[idx].label = label;
+          }
+        }
+      });
+    }
+
+    setPagePaths(merged);
+  }, [dbPages, settings.site_navigation]);
+
   const [selectedPath, setSelectedPath] = useState("/");
   const [pageData, setPageData] = useState({
     title: "",
@@ -257,6 +351,7 @@ export default function AdminDashboard() {
         loadGlobalSettings();
         loadPageContent("/");
         loadDepartments();
+        loadAllPages();
       } else {
         setIsAuthenticated(false);
       }
@@ -264,6 +359,19 @@ export default function AdminDashboard() {
       setIsAuthenticated(false);
     } finally {
       setCheckingAuth(false);
+    }
+  };
+
+  // Load All Pages List from DB
+  const loadAllPages = async () => {
+    try {
+      const res = await fetch("/api/content?type=pages");
+      const data = await res.json();
+      if (data.success && data.pages) {
+        setDbPages(data.pages);
+      }
+    } catch (err) {
+      console.error("Error loading pages from DB:", err);
     }
   };
 
@@ -561,6 +669,91 @@ export default function AdminDashboard() {
     updateNavigationSetting(updated);
   };
 
+  // Glimpses settings helpers
+  let glimpsesObj = {};
+  try {
+    glimpsesObj = JSON.parse(settings.site_glimpses || "{}");
+  } catch (e) {
+    if (settings.site_glimpses && typeof settings.site_glimpses === "object") {
+      glimpsesObj = settings.site_glimpses;
+    }
+  }
+
+  const updateGlimpsesSetting = (newGlimpses) => {
+    setSettings((prev) => ({
+      ...prev,
+      site_glimpses: JSON.stringify(newGlimpses)
+    }));
+  };
+
+  const addGlimpseCategory = () => {
+    const category = window.prompt("Enter new category name:");
+    if (!category) return;
+    if (glimpsesObj[category]) {
+      alert("Category already exists.");
+      return;
+    }
+    const updated = { ...glimpsesObj, [category]: [] };
+    updateGlimpsesSetting(updated);
+  };
+
+  const deleteGlimpseCategory = (category) => {
+    if (!window.confirm(`Delete the entire category "${category}" and all its glimpse cards?`)) return;
+    const updated = { ...glimpsesObj };
+    delete updated[category];
+    updateGlimpsesSetting(updated);
+  };
+
+  const addGlimpseCard = (category) => {
+    const title = window.prompt("Enter card title:");
+    if (!title) return;
+    const desc = window.prompt("Enter card description:");
+    if (!desc) return;
+    const href = window.prompt("Enter card link (e.g. /about/vision-mission):", "/");
+    if (!href) return;
+    const icon = window.prompt("Enter icon name (e.g. eye, calendar, award, file, users, user, book, building, star):", "eye");
+
+    const newCard = { title, desc, href, icon: icon || "eye" };
+    const updated = {
+      ...glimpsesObj,
+      [category]: [...(glimpsesObj[category] || []), newCard]
+    };
+    updateGlimpsesSetting(updated);
+  };
+
+  const deleteGlimpseCard = (category, index) => {
+    if (!window.confirm("Delete this glimpse card?")) return;
+    const updated = {
+      ...glimpsesObj,
+      [category]: glimpsesObj[category].filter((_, idx) => idx !== index)
+    };
+    updateGlimpsesSetting(updated);
+  };
+
+  const handleGlimpseCardChange = (category, index, field, value) => {
+    const updatedCards = [...glimpsesObj[category]];
+    updatedCards[index] = { ...updatedCards[index], [field]: value };
+    const updated = {
+      ...glimpsesObj,
+      [category]: updatedCards
+    };
+    updateGlimpsesSetting(updated);
+  };
+
+  const moveGlimpseCard = (category, index, direction) => {
+    const updatedCards = [...glimpsesObj[category]];
+    const target = index + direction;
+    if (target < 0 || target >= updatedCards.length) return;
+    const temp = updatedCards[index];
+    updatedCards[index] = updatedCards[target];
+    updatedCards[target] = temp;
+    const updated = {
+      ...glimpsesObj,
+      [category]: updatedCards
+    };
+    updateGlimpsesSetting(updated);
+  };
+
   // Save Page content handler
   const handleSavePage = async () => {
     setSavingPage(true);
@@ -581,6 +774,7 @@ export default function AdminDashboard() {
       if (data.success) {
         alert("Page layout configuration published successfully! Page is now updated in real-time.");
         loadPageContent(selectedPath);
+        loadAllPages();
       } else {
         alert("Error: " + data.error);
       }
@@ -608,8 +802,7 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) {
         alert("Page template deleted successfully!");
-        const newPaths = pagePaths.filter((p) => p.path !== selectedPath);
-        setPagePaths(newPaths);
+        loadAllPages();
         setSelectedPath("/");
         loadPageContent("/");
       } else {
@@ -741,6 +934,8 @@ export default function AdminDashboard() {
       btn_url: "/contact",
       alignment: "left",
       layout_type: layoutType,
+      title_align: "left",
+      title_color: "",
     };
     setPageData({ ...pageData, sections: [...pageData.sections, newSection] });
   };
@@ -766,6 +961,8 @@ export default function AdminDashboard() {
         btn_url: "/contact",
         alignment: "left",
         layout_type: layoutType,
+        title_align: "left",
+        title_color: "",
       };
 
       const newSections = [...pageData.sections];
@@ -1565,6 +1762,39 @@ export default function AdminDashboard() {
                                   </select>
                                 </div>
                               </div>
+
+                              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-150">
+                                <div>
+                                  <label className="block text-[8px] font-bold text-slate-500 uppercase mb-0.5">Title Align</label>
+                                  <select
+                                    value={sect.title_align || "left"}
+                                    onChange={(e) => updateSectionField(idx, "title_align", e.target.value)}
+                                    className="w-full px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
+                                  >
+                                    <option value="left">Left</option>
+                                    <option value="center">Center</option>
+                                    <option value="right">Right</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-[8px] font-bold text-slate-500 uppercase mb-0.5">Title Text Color</label>
+                                  <div className="flex gap-1.5 items-center">
+                                    <input
+                                      type="color"
+                                      value={sect.title_color || "#0f172a"}
+                                      onChange={(e) => updateSectionField(idx, "title_color", e.target.value)}
+                                      className="w-7 h-7 rounded bg-slate-50 border border-slate-200 cursor-pointer shrink-0"
+                                    />
+                                    <input
+                                      type="text"
+                                      value={sect.title_color || ""}
+                                      onChange={(e) => updateSectionField(idx, "title_color", e.target.value)}
+                                      placeholder="Default Color"
+                                      className="flex-1 px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] font-mono focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           ))
                         )}
@@ -2039,6 +2269,141 @@ export default function AdminDashboard() {
                                   >
                                     <Trash2 className="w-2.5 h-2.5" />
                                   </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                          At a Glance Directory Grid
+                        </label>
+                        <p className="text-[9px] text-slate-400 font-semibold mt-0.5">Customize homepage categories and grid cards.</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={addGlimpseCategory}
+                        className="px-2 py-1 bg-brand-blue/10 text-brand-blue border border-brand-blue/15 hover:bg-brand-blue/20 rounded-md text-[9px] font-black uppercase flex items-center gap-1"
+                      >
+                        <Plus className="w-2.5 h-2.5" />
+                        <span>Add Category</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1">
+                      {Object.keys(glimpsesObj).map((catName) => (
+                        <div key={catName} className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                          <div className="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
+                            <span className="text-[10px] font-black text-slate-800 uppercase tracking-wider">
+                              Category: {catName}
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => addGlimpseCard(catName)}
+                                className="px-2 py-0.5 bg-brand-orange/10 text-brand-orange border border-brand-orange/15 hover:bg-brand-orange/20 rounded text-[9px] font-black uppercase flex items-center gap-0.5"
+                              >
+                                <Plus className="w-2 h-2" />
+                                <span>Add Card</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteGlimpseCategory(catName)}
+                                className="p-0.5 bg-red-50 hover:bg-red-100 text-red-650 rounded border border-red-50"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2.5">
+                            {glimpsesObj[catName] && glimpsesObj[catName].map((card, cidx) => (
+                              <div key={cidx} className="bg-white p-3 rounded-xl border border-slate-200 space-y-2 relative">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-1">
+                                  <span className="text-[9px] font-bold text-slate-400">Card #{cidx + 1}</span>
+                                  <div className="flex items-center gap-0.5">
+                                    <button
+                                      type="button"
+                                      onClick={() => moveGlimpseCard(catName, cidx, -1)}
+                                      disabled={cidx === 0}
+                                      className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-655"
+                                    >
+                                      <ChevronUp className="w-2.5 h-2.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => moveGlimpseCard(catName, cidx, 1)}
+                                      disabled={cidx === glimpsesObj[catName].length - 1}
+                                      className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-655"
+                                    >
+                                      <ChevronDown className="w-2.5 h-2.5" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => deleteGlimpseCard(catName, cidx)}
+                                      className="p-0.5 bg-red-50 hover:bg-red-100 text-red-650 rounded border border-red-50"
+                                    >
+                                      <Trash2 className="w-2.5 h-2.5" />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">Card Title</label>
+                                    <input
+                                      type="text"
+                                      value={card.title}
+                                      onChange={(e) => handleGlimpseCardChange(catName, cidx, "title", e.target.value)}
+                                      className="w-full px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] font-semibold focus:outline-none"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">Link Target URL</label>
+                                    <input
+                                      type="text"
+                                      value={card.href}
+                                      onChange={(e) => handleGlimpseCardChange(catName, cidx, "href", e.target.value)}
+                                      className="w-full px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] font-mono focus:outline-none"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">Card Description</label>
+                                  <textarea
+                                    rows={1.5}
+                                    value={card.desc}
+                                    onChange={(e) => handleGlimpseCardChange(catName, cidx, "desc", e.target.value)}
+                                    className="w-full px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] focus:outline-none"
+                                  />
+                                </div>
+
+                                <div>
+                                  <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">Icon Key</label>
+                                  <select
+                                    value={card.icon || "eye"}
+                                    onChange={(e) => handleGlimpseCardChange(catName, cidx, "icon", e.target.value)}
+                                    className="w-full px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] focus:outline-none font-semibold"
+                                  >
+                                    <option value="eye">Eye (Vision/Mission)</option>
+                                    <option value="calendar">Calendar (Milestones)</option>
+                                    <option value="award">Award (Achievements)</option>
+                                    <option value="file">File (Approvals/Circulars)</option>
+                                    <option value="users">Users (Governing Council)</option>
+                                    <option value="user">User (Chairman)</option>
+                                    <option value="book">Book (Principal/Academics)</option>
+                                    <option value="building">Building (Dean/Facilities)</option>
+                                    <option value="star">Star (Capabilities)</option>
+                                    <option value="handshake">Handshake (MoUs/Placements)</option>
+                                    <option value="sports">Sports (Gymnasium)</option>
+                                  </select>
                                 </div>
                               </div>
                             ))}
