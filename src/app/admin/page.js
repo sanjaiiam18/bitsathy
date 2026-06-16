@@ -41,6 +41,84 @@ export default function AdminDashboard() {
   // Active workspace tab
   const [activeTab, setActiveTab] = useState("pages"); // "pages" | "departments" | "settings"
 
+  const defaultNav = [
+    {
+      name: "About BIT",
+      href: "/about",
+      submenu: [
+        { name: "Vision & Mission", href: "/about/vision-mission" },
+        { name: "Milestones", href: "/about/milestones" },
+        { name: "Achievements", href: "/about/achievements" },
+        { name: "Approvals & Circulars", href: "/about/approvals-circulars" }
+      ]
+    },
+    {
+      name: "Administration",
+      href: "/administration",
+      submenu: [
+        { name: "Governing Council", href: "/administration/governing-council" },
+        { name: "Chairman's Desk", href: "/administration/chairmans-desk" },
+        { name: "Principal's Desk", href: "/administration/principals-desk" },
+        { name: "Dean - Administration", href: "/administration/dean-administration" }
+      ]
+    },
+    {
+      name: "Academics",
+      href: "/academics",
+      submenu: [
+        { name: "Departments Catalog", href: "/academics" },
+        { name: "Programmes Offered", href: "/academics/programmes-offered" },
+        { name: "Office of the CoE", href: "/academics/coecorner" },
+        { name: "Regulations", href: "/academics/regulations" },
+        { name: "Academic Calendar", href: "/academics/academic-calendar" },
+        { name: "Learning Centre", href: "/academics/learning-centre" },
+        { name: "English Cell (ELCC)", href: "/academics/elcc" },
+        { name: "Enhancement Schemes", href: "/academics/capability-enhancement-schemes" }
+      ]
+    },
+    {
+      name: "Placements",
+      href: "/placements"
+    },
+    {
+      name: "Life at BIT",
+      href: "/campus-life",
+      submenu: [
+        { name: "Clubs & Societies", href: "/campus-life/clubs-societies" },
+        { name: "Campus Facilities", href: "/campus-life/facilities" },
+        { name: "Sports Facilities", href: "/campus-life/sports" },
+        { name: "Gymnasium", href: "/campus-life/gymnasium" },
+        { name: "College Bus routes", href: "/campus-life/bus" },
+        { name: "Hostel & Medical", href: "/campus-life/hostel-medical" },
+        { name: "Sustainability & Green", href: "/campus-life/green" }
+      ]
+    },
+    {
+      name: "Research",
+      href: "/research",
+      submenu: [
+        { name: "Advisory Board", href: "/research/advisory-board" },
+        { name: "Academic Research", href: "/research/academic" },
+        { name: "Research Facilities", href: "/research/facilities" },
+        { name: "Research Centres", href: "/research/centres" },
+        { name: "Quality Improvement (QIP)", href: "/research/qip" },
+        { name: "R&D Newsletter", href: "/research/newsletter" }
+      ]
+    },
+    {
+      name: "Gurugulam",
+      href: "/gurugulam"
+    },
+    {
+      name: "PIC",
+      href: "/product-innovation-centre"
+    },
+    {
+      name: "Contact",
+      href: "/contact"
+    }
+  ];
+
   // Settings states
   const [settings, setSettings] = useState({
     brand_blue: "#1e3a8a",
@@ -48,7 +126,9 @@ export default function AdminDashboard() {
     brand_cyan: "#06b6d4",
     brand_purple: "#6366f1",
     site_name: "Bannari Amman Institute of Technology",
+    site_logo: "/logo.png",
     site_footer_text: "© 2026 Bannari Amman Institute of Technology. All Rights Reserved.",
+    site_navigation: JSON.stringify(defaultNav),
   });
   const [savingSettings, setSavingSettings] = useState(false);
 
@@ -392,6 +472,93 @@ export default function AdminDashboard() {
     } finally {
       setSavingSettings(false);
     }
+  };
+
+  // Navigation settings helpers
+  let navItems = [];
+  try {
+    navItems = JSON.parse(settings.site_navigation || "[]");
+  } catch (e) {
+    if (Array.isArray(settings.site_navigation)) {
+      navItems = settings.site_navigation;
+    }
+  }
+
+  const updateNavigationSetting = (newNav) => {
+    setSettings((prev) => ({
+      ...prev,
+      site_navigation: JSON.stringify(newNav)
+    }));
+  };
+
+  const handleNavChange = (index, field, value) => {
+    const updated = [...navItems];
+    updated[index] = { ...updated[index], [field]: value };
+    updateNavigationSetting(updated);
+  };
+
+  const handleSubnavChange = (parentIndex, subIndex, field, value) => {
+    const updated = [...navItems];
+    const sub = [...(updated[parentIndex].submenu || [])];
+    sub[subIndex] = { ...sub[subIndex], [field]: value };
+    updated[parentIndex] = { ...updated[parentIndex], submenu: sub };
+    updateNavigationSetting(updated);
+  };
+
+  const addTopNavLink = () => {
+    const name = window.prompt("Enter link label:");
+    if (!name) return;
+    const href = window.prompt("Enter link URL:", "/");
+    if (!href) return;
+    const updated = [...navItems, { name, href }];
+    updateNavigationSetting(updated);
+  };
+
+  const addSubNavLink = (parentIndex) => {
+    const name = window.prompt("Enter sub-link label:");
+    if (!name) return;
+    const href = window.prompt("Enter sub-link URL:", "/");
+    if (!href) return;
+    const updated = [...navItems];
+    const sub = [...(updated[parentIndex].submenu || []), { name, href }];
+    updated[parentIndex] = { ...updated[parentIndex], submenu: sub };
+    updateNavigationSetting(updated);
+  };
+
+  const deleteTopNavLink = (index) => {
+    if (!window.confirm("Delete this navigation menu link?")) return;
+    const updated = navItems.filter((_, idx) => idx !== index);
+    updateNavigationSetting(updated);
+  };
+
+  const deleteSubNavLink = (parentIndex, subIndex) => {
+    if (!window.confirm("Delete this sub-link?")) return;
+    const updated = [...navItems];
+    const sub = updated[parentIndex].submenu.filter((_, idx) => idx !== subIndex);
+    updated[parentIndex] = { ...updated[parentIndex], submenu: sub.length > 0 ? sub : undefined };
+    updateNavigationSetting(updated);
+  };
+
+  const moveTopNavLink = (index, direction) => {
+    const updated = [...navItems];
+    const target = index + direction;
+    if (target < 0 || target >= updated.length) return;
+    const temp = updated[index];
+    updated[index] = updated[target];
+    updated[target] = temp;
+    updateNavigationSetting(updated);
+  };
+
+  const moveSubNavLink = (parentIndex, subIndex, direction) => {
+    const updated = [...navItems];
+    const sub = [...(updated[parentIndex].submenu || [])];
+    const target = subIndex + direction;
+    if (target < 0 || target >= sub.length) return;
+    const temp = sub[subIndex];
+    sub[subIndex] = sub[target];
+    sub[target] = temp;
+    updated[parentIndex] = { ...updated[parentIndex], submenu: sub };
+    updateNavigationSetting(updated);
   };
 
   // Save Page content handler
@@ -1726,6 +1893,17 @@ export default function AdminDashboard() {
                   </div>
 
                   <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Site Logo URL</label>
+                    <input
+                      type="text"
+                      value={settings.site_logo || ""}
+                      onChange={(e) => setSettings({ ...settings, site_logo: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-800 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue font-mono"
+                      placeholder="/logo.png"
+                    />
+                  </div>
+
+                  <div>
                     <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Site Footer Copyright</label>
                     <input
                       type="text"
@@ -1733,6 +1911,141 @@ export default function AdminDashboard() {
                       onChange={(e) => setSettings({ ...settings, site_footer_text: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-800 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
                     />
+                  </div>
+
+                  <div className="space-y-3 pt-4 border-t border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                        Navbar Navigation Menu
+                      </label>
+                      <button
+                        type="button"
+                        onClick={addTopNavLink}
+                        className="px-2 py-1 bg-brand-blue/10 text-brand-blue border border-brand-blue/15 hover:bg-brand-blue/20 rounded-md text-[9px] font-black uppercase flex items-center gap-1"
+                      >
+                        <Plus className="w-2.5 h-2.5" />
+                        <span>Add Menu Link</span>
+                      </button>
+                    </div>
+
+                    <div className="space-y-3.5 max-h-[350px] overflow-y-auto pr-1">
+                      {navItems.map((item, idx) => (
+                        <div key={idx} className="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 relative">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                              Item #{idx + 1}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <button
+                                type="button"
+                                onClick={() => moveTopNavLink(idx, -1)}
+                                disabled={idx === 0}
+                                className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-600 flex items-center justify-center"
+                              >
+                                <ChevronUp className="w-3 h-3" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => moveTopNavLink(idx, 1)}
+                                disabled={idx === navItems.length - 1}
+                                className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-600 flex items-center justify-center"
+                              >
+                                <ChevronDown className="w-3 h-3" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteTopNavLink(idx)}
+                                className="p-0.5 bg-red-50 hover:bg-red-105 text-red-650 rounded flex items-center justify-center border border-red-100"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">Label</label>
+                              <input
+                                type="text"
+                                value={item.name}
+                                onChange={(e) => handleNavChange(idx, "name", e.target.value)}
+                                className="w-full px-2 py-1.5 rounded bg-white border border-slate-200 text-slate-800 text-[11px] font-semibold focus:outline-none"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[8px] font-bold text-slate-400 uppercase mb-0.5">URL Link</label>
+                              <input
+                                type="text"
+                                value={item.href}
+                                onChange={(e) => handleNavChange(idx, "href", e.target.value)}
+                                className="w-full px-2 py-1.5 rounded bg-white border border-slate-200 text-slate-800 text-[11px] font-mono focus:outline-none"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Submenu links */}
+                          <div className="pl-3 border-l-2 border-slate-200 space-y-2 pt-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[8px] font-bold text-slate-400 uppercase">Submenu Links</span>
+                              <button
+                                type="button"
+                                onClick={() => addSubNavLink(idx)}
+                                className="text-[8px] font-black uppercase text-brand-orange hover:underline flex items-center gap-0.5"
+                              >
+                                <Plus className="w-2 h-2" />
+                                <span>Add Sub-Link</span>
+                              </button>
+                            </div>
+
+                            {item.submenu && item.submenu.map((sub, sidx) => (
+                              <div key={sidx} className="flex gap-2 items-center bg-white p-2 rounded-xl border border-slate-150">
+                                <div className="flex-1 grid grid-cols-2 gap-1.5">
+                                  <input
+                                    type="text"
+                                    value={sub.name}
+                                    placeholder="Sub-label"
+                                    onChange={(e) => handleSubnavChange(idx, sidx, "name", e.target.value)}
+                                    className="px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] font-semibold focus:outline-none"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={sub.href}
+                                    placeholder="/subpage"
+                                    onChange={(e) => handleSubnavChange(idx, sidx, "href", e.target.value)}
+                                    className="px-2 py-1 rounded bg-slate-50 border border-slate-200 text-slate-800 text-[10px] font-mono focus:outline-none"
+                                  />
+                                </div>
+                                <div className="flex items-center gap-0.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => moveSubNavLink(idx, sidx, -1)}
+                                    disabled={sidx === 0}
+                                    className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-600"
+                                  >
+                                    <ChevronUp className="w-2.5 h-2.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => moveSubNavLink(idx, sidx, 1)}
+                                    disabled={sidx === item.submenu.length - 1}
+                                    className="p-0.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-30 rounded text-slate-600"
+                                  >
+                                    <ChevronDown className="w-2.5 h-2.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => deleteSubNavLink(idx, sidx)}
+                                    className="p-0.5 bg-red-50 hover:bg-red-100 text-red-650 rounded border border-red-50"
+                                  >
+                                    <Trash2 className="w-2.5 h-2.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   <button

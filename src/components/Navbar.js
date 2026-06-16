@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import PreviewListener from "./PreviewListener";
@@ -26,7 +26,7 @@ export default function Navbar() {
     setTimeoutId(id);
   };
 
-  const navigation = [
+  const defaultNav = [
     {
       name: "About BIT",
       href: "/about",
@@ -104,6 +104,52 @@ export default function Navbar() {
     }
   ];
 
+  const [navigation, setNavigation] = useState(defaultNav);
+  const [logo, setLogo] = useState("/logo.png");
+
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && window.location.search.includes("preview=true");
+    fetch(isPreview ? "/api/settings?preview=true" : "/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.settings) {
+          if (data.settings.site_logo) {
+            setLogo(data.settings.site_logo);
+          }
+          if (data.settings.site_navigation) {
+            try {
+              const parsed = JSON.parse(data.settings.site_navigation);
+              if (Array.isArray(parsed)) {
+                setNavigation(parsed);
+              }
+            } catch (e) {
+              console.error("Error parsing site_navigation setting:", e);
+            }
+          }
+        }
+      })
+      .catch((err) => console.error("Error loading navbar settings:", err));
+
+    const handleSettingsUpdate = (e) => {
+      const { settings } = e.detail;
+      if (settings) {
+        if (settings.site_logo) setLogo(settings.site_logo);
+        if (settings.site_navigation) {
+          try {
+            const parsed = typeof settings.site_navigation === "string"
+              ? JSON.parse(settings.site_navigation)
+              : settings.site_navigation;
+            if (Array.isArray(parsed)) {
+              setNavigation(parsed);
+            }
+          } catch (e) {}
+        }
+      }
+    };
+    window.addEventListener("bit_settings_update", handleSettingsUpdate);
+    return () => window.removeEventListener("bit_settings_update", handleSettingsUpdate);
+  }, []);
+
   const isLinkActive = (href, submenu) => {
     if (href === "/") return pathname === "/";
     if (pathname === href) return true;
@@ -128,7 +174,7 @@ export default function Navbar() {
           {/* Logo Section */}
           <Link href="/" className="flex items-center shrink-0">
             <img
-              src="/logo.png"
+              src={logo}
               alt="Bannari Amman Institute of Technology"
               className="h-15 sm:h-15 w-auto object-contain transition-transform duration-300 hover:scale-102"
             />

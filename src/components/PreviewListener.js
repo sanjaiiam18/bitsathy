@@ -19,6 +19,7 @@ export default function PreviewListener() {
 
         // 2. Dispatch custom event for page content updates
         window.dispatchEvent(new CustomEvent("bit_preview_update", { detail: event.data }));
+        window.dispatchEvent(new CustomEvent("bit_settings_update", { detail: event.data }));
       }
     };
 
@@ -66,6 +67,11 @@ export default function PreviewListener() {
             window.dispatchEvent(new CustomEvent("bit_preview_update", {
               detail: {
                 pageData: parsedDraft,
+                settings: parsedSettings
+              }
+            }));
+            window.dispatchEvent(new CustomEvent("bit_settings_update", {
+              detail: {
                 settings: parsedSettings
               }
             }));
